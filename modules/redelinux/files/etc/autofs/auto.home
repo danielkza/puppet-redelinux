@@ -1,0 +1,1 @@
+* -fstype=nfs4,sec=krb5p nfs:/srv/home/&
