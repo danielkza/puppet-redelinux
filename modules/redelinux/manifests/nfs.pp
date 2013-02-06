@@ -2,7 +2,7 @@ class redelinux::nfs
 {
 	include nsswitch
 
-	Package['autofs'] -> Class['nsswitch']
+	Package['nfs'] -> Package['autofs'] -> Class['nsswitch']
 	
 	# NFS
 	package { 'nfs':
@@ -70,6 +70,7 @@ class redelinux::nfs
 	# Misc. files
 	file { '/etc/profile.d/nfs_path.sh':
 		ensure => file,
-		source => 'puppet:///modules/redelinux/etc/profile.d/nfs_path.sh'
+		source => 'puppet:///modules/redelinux/etc/profile.d/nfs_path.sh',
+		require => Package['autofs']
 	}
 }
