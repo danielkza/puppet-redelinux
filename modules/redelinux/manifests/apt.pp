@@ -1,14 +1,8 @@
 class redelinux::apt
 {
-    include apt
+    class { '::apt': }
 
     $debian_mirror = 'http://sft.if.usp.br/debian/'
-
-    apt::source { 'debian':
-        location          => $debian_mirror,
-        repos             => 'main',
-        required_packages => 'debian-keyring debian-archive-keyring',
-    }
 
     if $redelinux::debian_pre_wheezy
     {  

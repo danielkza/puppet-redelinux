@@ -11,7 +11,7 @@ class redelinux::programming::languages
     # Ruby
     package { 'ruby': }
     # Lua
-    package { ['lua50', 'lua5.1', 'lua5.2':] }
+    package { ['lua50', 'lua5.1', 'lua5.2']: }
     # Fortran
     package { 'gfortran': }
     # C, C++
@@ -52,17 +52,16 @@ class redelinux::programming::languages
     # Mono
     package { 'mono-complete': }
     # Assembly
-    package { 'nasm', 'gas', 'yasm': }
+    package { ['nasm', 'gas', 'yasm']: }
     # Lisp
     package { 'clisp': }
     # Scheme
     if $redelinux::debian_pre_wheezy
     {
-        apt::force { 'racket': 
-            release  => 'squeeze-backports',
-            require  => Apt::Backports,
-            before   => Package['racket'],
+        package { 'racket':
+	    require => Apt::Backports
         }
+    } else {
+	package { 'racket': }
     }
-    package { 'racket': }
 }

@@ -10,7 +10,7 @@ class redelinux::programming::tools_libs
 
     # Compiling and parsing
     package { 'javacc': }
-    package { 'flex', 'bison': }
+    package { ['flex', 'bison']: }
 
     # Boost
     package { 'libboost-all-dev': }
@@ -26,10 +26,10 @@ class redelinux::programming::tools_libs
     package { ['python-wxgtk2.8', 'python-wxtools']: }
 
     # GTK
-    package { ['libgtk2.0-dev']: }
-    package { ['python-gtk2-dev']: }
-    package { ['libgtk2-ruby']: }
-    package { ['libgtk2-perl']: }
+    package { 'libgtk2.0-dev': }
+    package { 'python-gtk2-dev': }
+    package { 'libgtk2-ruby': }
+    package { 'libgtk2-perl': }
 
     # Databases
     ## MySQL

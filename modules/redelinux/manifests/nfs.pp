@@ -13,6 +13,7 @@ class redelinux::nfs
         path    => '/etc/default/nfs-common',
         source  => 'puppet:///modules/redelinux/etc/default/nfs-common',
         require => Package[$nfs],
+	notify  => Service['nfs-common'],
     }
     
     file { 'idmapd.conf':
@@ -20,16 +21,13 @@ class redelinux::nfs
         path    => '/etc/idmapd.conf',
         source  => 'puppet:///modules/redelinux/etc/idmapd.conf',
         require => Package[$nfs],
+	notify  => Service['nfs-common'],
     }
     
     service { 'nfs-common':
         ensure    => running,
         enable    => true,
         require   => Package[$nfs],
-        subscribe => [
-            File['idmapd.conf'],
-            File['nfs-common_default'],
-        ],
     }
     
     # AutoFS

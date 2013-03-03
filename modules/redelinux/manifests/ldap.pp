@@ -27,12 +27,12 @@ class redelinux::ldap
         path    => '/etc/nslcd.conf',
         source  => 'puppet:///modules/redelinux/etc/nslcd.conf',
         require => Package[$ldap],
+	notify  => Service['nslcd'],
     }
 
     service { 'nslcd':
         ensure    => running,
         enable    => true,
         require   => Package[$ldap],
-        subscribe => File['nslcd.conf'],
     }
 }

@@ -1,15 +1,16 @@
 node base
 {
-    include redelinux::network
+    include redelinux
+    #include redelinux::network
     include redelinux::apt
-    include redelinux::ntp
-    include redelinux::kerberos
-    include redelinux::ldap
-    include redelinux::nfs
-    include redelinux::nfsswitch
-    include redelinux::ssh
+    #include redelinux::ntp
+    #include redelinux::kerberos
+    #include redelinux::ldap
+    #include redelinux::nfs
+    #include redelinux::nsswitch
+    #include redelinux::ssh
 
-    include redelinux::programming
+    #include redelinux::programming
 
 }
 
