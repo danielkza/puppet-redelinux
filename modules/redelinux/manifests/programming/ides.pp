@@ -1,4 +1,4 @@
-class redelinux::programming:ides
+class redelinux::programming::ides
 {   
     include redelinux::apt
 
