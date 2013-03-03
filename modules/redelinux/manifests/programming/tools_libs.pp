@@ -1,7 +1,5 @@
 class redelinux::programming::tools_libs
 {
-    include redelinux::apt
-    
     Package {
         ensure => latest,
     }

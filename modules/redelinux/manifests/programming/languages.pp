@@ -11,7 +11,7 @@ class redelinux::programming::languages
     # Ruby
     package { 'ruby': }
     # Lua
-    package { 'lua50', 'lua5.1', 'lua5.2': }
+    package { ['lua50', 'lua5.1', 'lua5.2':] }
     # Fortran
     package { 'gfortran': }
     # C, C++
