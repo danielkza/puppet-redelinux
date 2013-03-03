@@ -6,7 +6,7 @@ class redelinux::ssh
             ensure => present,
         }
 
-        file { 'sshd_config',
+        file { 'sshd_config':
             ensure => file,
             path   => '/etc/ssh/sshd_config',
             source => 'puppet:///modules/redelinux/etc/ssh/sshd_config'
@@ -19,7 +19,7 @@ class redelinux::ssh
             ensure => present,
         }
 
-        file { 'sshd_config',
+        file { 'sshd_config':
             ensure => file,
             path   => '/etc/ssh/ssh_config',
             source => 'puppet:///modules/redelinux/etc/ssh/ssh_config'
