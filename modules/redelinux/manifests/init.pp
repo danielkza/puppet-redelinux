@@ -1,10 +1,5 @@
 class redelinux
 {
-    include redelinux::network
-    include redelinux::ntp
-    include redelinux::kerberos
-    include redelinux::ldap
-    include redelinux::nfs
-    include redelinux::ssh
-    include redelinux::sudo
+    $debian_pre_wheezy = ($operatingsystem == 'Debian'
+                          and versioncmp($operatingsystemrelease, '7.0') < 0)
 }

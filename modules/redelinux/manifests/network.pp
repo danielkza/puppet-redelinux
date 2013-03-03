@@ -9,18 +9,19 @@ class redelinux::network
         ensure       => present,
         ip           => '127.0.0.1',
         host_aliases => undef,
-        require      => Host["$hostname"],
     }
     
     # Fix debians stupid habit of not sending hostname on DHCP requests
-    file { "dhclient_hostname_fix":
-        ensure => directory,
-        path   => "/etc/dhcp/dhclient-enter-hooks.d/",
-        source => "puppet:///modules/redelinux/etc/dhcp/dhclient-enter-hooks.d/",
-        recurse => remote,
+
+    if $redelinux::debian_pre_wheezy
+    {
+        file { 'dhclient_hostname_fix':
+            ensure => file,
+            path   => '/etc/dhcp/dhclient-enter-hooks.d/hostname',
+            source => 'puppet:///modules/redelinux/etc/dhcp/dhclient-enter-hooks.d/hostname',
+            notify => Service['networking']
+        }
+        
+        service { 'networking': }
     }
-    
-    service { "networking":
-        subscribe => File['dhclient_hostname_fix'],
-    }    
 }

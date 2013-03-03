@@ -1,11 +1,9 @@
 class redelinux::nfs
 {
-    include nsswitch
-
-    Package['autofs'] -> Class['nsswitch']
-    
-    # NFS
+    include redelinux::nsswitch
+   
     $nfs = 'nfs-common'
+
     package { $nfs:
         ensure => present,
     }
@@ -39,12 +37,15 @@ class redelinux::nfs
         ensure => present,
         require => Package[$nfs],
     }
+
+    Package['autofs'] -> Class['nsswitch']
     
     file { 'autofs_default':
-        ensure => present,
-        path   => '/etc/default/autofs',
-        source => 'puppet:///modules/redelinux/etc/default/autofs',
+        ensure  => present,
+        path    => '/etc/default/autofs',
+        source  => 'puppet:///modules/redelinux/etc/default/autofs',
         require => Package['autofs'],
+        notify  => Service['autofs']
     }
     
     file { 'autofs':
@@ -53,22 +54,22 @@ class redelinux::nfs
         source => 'puppet:///modules/redelinux/etc/autofs/',
         recurse => remote,
         require => Package['autofs'],
+        notify  => Service['autofs']
     }
-    
+
+    $autofs_service_hasstatus = !$debian_pre_wheezy
+
     service { 'autofs':
         ensure    => running,
         enable    => true,
-        hasstatus => false,
+        hasstatus => $autofs_service_hasstatus,
         pattern   => 'automount',
         require   => Package['autofs'],
         subscribe => [
-            File['autofs_default'],
-            File['autofs'],
             Class['nsswitch'],
         ],
     }
     
-    # Misc. files
     file { '/etc/profile.d/nfs_path.sh':
         ensure => file,
         source => 'puppet:///modules/redelinux/etc/profile.d/nfs_path.sh',

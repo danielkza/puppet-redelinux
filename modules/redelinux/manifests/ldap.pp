@@ -1,6 +1,6 @@
 class redelinux::ldap
 {
-    include nsswitch
+    include redelinux::nsswitch
             
     # LDAP
     $ldap = ['libnss-ldapd', 'libsasl2-modules-gssapi-mit', 'kstart']
