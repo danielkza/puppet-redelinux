@@ -6,7 +6,8 @@ class redelinux::apt
 
     if $redelinux::debian_pre_wheezy
     {  
-        include apt::backports
+        # Add backports repo
+        class { '::apt::backports': }
 
         # Add testing repo. Very low priority, so by default nothing will
         # ever be installed from it
