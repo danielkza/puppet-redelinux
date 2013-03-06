@@ -1,1 +1,2 @@
-PATH=$PATH:/nfs/bin
+#!/bin/sh
+export PATH=$PATH:/nfs/bin
