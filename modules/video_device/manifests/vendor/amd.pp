@@ -7,7 +7,7 @@ class video_device::vendor::amd
     {
     	video_device::driver { 'video_device_amd_catalyst':
     		driver => $lsbdistid ? {
-    			Debian => ['fglrx-driver', 'fglrx-modules-dkms'],
+    			Debian        => ['fglrx-driver', 'fglrx-modules-dkms'],
     			/Ubuntu|Mint/ => ['fglrx'],
     		},
     		control     => ['fglrx-control'],

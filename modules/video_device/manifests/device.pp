@@ -9,7 +9,7 @@ class video_device::device(
 ) {
     # Manual driver was selected, don't do any automatic selection logic
     if $driver != undef {
-        if $vendor == undef or not is_string($vendor) {
+        if $vendor == undef or !is_string($vendor) {
             fail("Manual driver selection requires manual selection of a single vendor")
         } else {
             class { "video_device::vendor::${vendor}::${driver}":
@@ -29,13 +29,14 @@ class video_device::device(
         }
     }
 
+    # Realize packages according to passed options
     if $install_control {
-        Package <| tag == 'video_device::vendor::control' |>
+        Package <| tag == 'video_device::driver::control' |>
     }
     if $install_video_accel {
-        Package <| tag == 'video_device::vendor::video_accel' |>
+        Package <| tag == 'video_device::driver::video_accel' |>
     }
     if $install_extra {
-        Package <| tag == 'video_device::vendor::extra' |>
+        Package <| tag == 'video_device::driver::extra' |>
     }
 }

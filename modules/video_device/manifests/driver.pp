@@ -10,24 +10,27 @@ define video_device::driver(
 		ensure => $ensure
 	}
 
+	# Virtual packages, realized later according to generic driver install
+	# options
+
 	if $control != undef and !empty($control) {
 		@package { $control:
 			ensure => $ensure,
-			tag    => 'video_device::vendor::control'
+			tag    => 'video_device::driver::control'
 		}
 	}
 
 	if $video_accel != undef and !empty($video_accel) {
 		@package { $video_accel:
 			ensure => $ensure,
-			tag    => 'video_device::vendor::video_accel'
+			tag    => 'video_device::driver::video_accel'
 		}
 	}
 
 	if $extra != undef and !empty($extra) {
 		@package { $extra:
 			ensure => $ensure,
-			tag    => 'video_device::vendor::extra'
+			tag    => 'video_device::driver::extra'
 		}
 	}
 }
