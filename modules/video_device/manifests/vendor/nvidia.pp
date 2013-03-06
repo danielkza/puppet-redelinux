@@ -3,7 +3,7 @@ class video_device::vendor::nvidia
     $pref_free        = 'nvidia'
     $pref_proprietary = 'nouveau'
 
-    class nvidia inherits video_device::vendor_base
+    class nvidia($ensure)
     {
         video_device::driver { 'video_device_nvidia_nvidia':
             driver => $lsbdistid ? {
@@ -12,18 +12,20 @@ class video_device::vendor::nvidia
             },
     		control     => ['nvidia-settings'],
         	video_accel => ['nvidia-vdpau-driver', 'vdpau-va-driver'],
-            type        => 'proprietary'
+            type        => 'proprietary',
+            ensure      => $ensure
         }
     }
 
-    class nouveau inherits video_device::vendor_base
+    class nouveau($ensure)
     {
         video_device::driver { 'video_device_nvidia_nouveau':
             driver => $lsbdistid ? {
                 Debian              => ['xserver-xorg-video-nouveau'],
                 /(?i)Ubuntu|Mint/   => ['xserver-xorg-video-nouveau', 'nouveau-firmware']
             },
-            type => 'free'
+            type   => 'free',
+            ensure => $ensure
         }
     }
 }
