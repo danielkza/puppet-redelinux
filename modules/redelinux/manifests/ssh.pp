@@ -1,28 +1,28 @@
 class redelinux::ssh
 {
-    class redelinux::ssh::server
+    include redelinux::util
+
+    class server
     {
         package { 'openssh-server':
             ensure => present,
         }
 
-        file { 'sshd_config':
-            ensure => file,
-            path   => '/etc/ssh/sshd_config',
-            source => 'puppet:///modules/redelinux/etc/ssh/sshd_config'
+        config_file { 'ssh_server_config':
+            path    => '/etc/ssh/sshd_config',
+            require => Package['openssh-server']
         }
     }
 
-    class redelinux::ssh::client
+    class client
     {
         package { 'openssh-client':
             ensure => present,
         }
 
-        file { 'sshd_config':
-            ensure => file,
-            path   => '/etc/ssh/ssh_config',
-            source => 'puppet:///modules/redelinux/etc/ssh/ssh_config'
+        config_file { 'ssh_client_config':
+            path    => '/etc/ssh/ssh_config',
+            require => Package['openssh-client']
         }
     }
 }

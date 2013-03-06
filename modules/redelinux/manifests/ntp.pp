@@ -1,4 +1,5 @@
-class redelinux::ntp {
+class redelinux::ntp
+{
     # NTP
     package { 'ntp':
         ensure => present,

@@ -1,6 +1,5 @@
 class redelinux::programming::ides
 {   
-#    include deb
     include redelinux::apt
 
     Package {
@@ -23,8 +22,6 @@ class redelinux::programming::ides
     package { 'monodevelop': }
     # BlueJ
     deb::deb { 'bluej':
-	source => 'puppet:///modules/redelinux/packages/bluej.deb',
+        source => 'puppet:///modules/redelinux/packages/bluej.deb',
     }
-
-    # Not IDEs, but as good as
 }

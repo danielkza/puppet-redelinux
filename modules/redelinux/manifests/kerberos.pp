@@ -1,5 +1,7 @@
 class redelinux::kerberos
 {
+    include redelinux::util
+
     # Kerberos
     $kerberos = ["krb5-user", "libpam-krb5"]
 
@@ -7,10 +9,8 @@ class redelinux::kerberos
         ensure => present,
     }
 
-    file { 'krb5.conf':
-        ensure  => file,
+    config_file { 'krb5.conf':
         path    => '/etc/krb5.conf',
-        source  => 'puppet:///modules/redelinux/etc/krb5.conf',
         require => Package[$kerberos],
     }
 }    

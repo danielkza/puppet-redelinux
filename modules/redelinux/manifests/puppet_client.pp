@@ -1,36 +1,36 @@
 class redelinux::puppet_client
 {
-    File {
-        notify => Service['puppet'],
+    include redelinux::util
+
+    # Puppet
+    package { 'puppet':
+        ensure  => latest,
     }
 
-    file { 'puppet.conf':
-        ensure => file,
-        path   => '/etc/puppet/puppet.conf',
-        source => 'puppet:///modules/redelinux/etc/puppet/puppet.conf',
-    }
-    
-    file { 'puppet_default':
-        ensure => file,
-        path   => '/etc/default/puppet',
-        source => 'puppet:///modules/redelinux/etc/default/puppet',
-    }
-    
-    file { 'auth.conf':
-        ensure => file,
-        path   => '/etc/puppet/auth.conf',
-        source => 'puppet:///modules/redelinux/etc/puppet/auth.conf',
-        links  => follow,
-    }
-
-    file { 'namespaceauth.conf':
-        ensure  => file,
-        path    => '/etc/puppet/namespaceauth.conf',
-        content => '',
-    }
-  
     service { 'puppet':
         ensure  => running,
         enabled => true,
+    }
+
+    # Puppet's config files
+    Config_file {
+        notify => Service['puppet'],
+    }
+
+    config_file { 'puppet.conf':
+        path   => '/etc/puppet/puppet.conf',
+    }
+    
+    config_file { 'puppet_default':
+        path   => '/etc/default/puppet',
+    }
+    
+    config_file { 'auth.conf':
+        path   => '/etc/puppet/auth.conf',
+    }
+
+    config_file { 'namespaceauth.conf':
+        path    => '/etc/puppet/namespaceauth.conf',
+        content => '',
     }
 }

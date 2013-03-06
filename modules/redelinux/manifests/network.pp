@@ -1,5 +1,7 @@
 class redelinux::network
 {
+    include redelinux::util
+
     # Fix debian's weird hosts file
     host { "$hostname":
         ensure => absent,
@@ -8,18 +10,15 @@ class redelinux::network
     host { 'localhost':
         ensure       => present,
         ip           => '127.0.0.1',
-        host_aliases => undef,
+        host_aliases => [],
     }
     
-    # Fix debians stupid habit of not sending hostname on DHCP requests
-
+    # Fix Debian's stupid habit of not sending hostname on DHCP requests
     if $redelinux::debian_pre_wheezy
     {
-        file { 'dhclient_hostname_fix':
-            ensure => file,
+        config_file { 'dhclient_hostname_hook':
             path   => '/etc/dhcp/dhclient-enter-hooks.d/hostname',
-            source => 'puppet:///modules/redelinux/etc/dhcp/dhclient-enter-hooks.d/hostname',
-            notify => Service['networking']
+            notify => Service['networking'],
         }
         
         service { 'networking': }

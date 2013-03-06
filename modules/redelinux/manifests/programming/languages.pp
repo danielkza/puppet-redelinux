@@ -59,9 +59,9 @@ class redelinux::programming::languages
     if $redelinux::debian_pre_wheezy
     {
         package { 'racket':
-	    require => Apt::Backports
+        require => Apt::Backports
         }
     } else {
-	package { 'racket': }
+    package { 'racket': }
     }
 }

@@ -1,8 +1,8 @@
 class redelinux::nsswitch
 {
-    file { 'nsswitch.conf':
-        ensure => file,
+    include redelinux::util
+
+    config_file { 'nsswitch.conf':
         path   => '/etc/nsswitch.conf',
-        source => 'puppet:///modules/redelinux/etc/nsswitch.conf',
-    }    
+    }
 }

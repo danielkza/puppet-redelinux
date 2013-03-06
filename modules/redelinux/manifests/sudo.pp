@@ -1,26 +1,24 @@
 class redelinux::sudo
 {
+    # Sudo
     package { 'sudo':
         ensure => present,
     }
 
-    file { 'sudoers':
-        ensure  => file,
+    # Sudo's config files
+    config_file { 'sudoers':
         path    => '/etc/sudoers',
-        owner   => root,
-        group   => root,
-        mode    => 440,
-        source  => 'puppet:///modules/redelinux/etc/sudoers',
+        mode    => '0440',
         require => Package['sudo'],
     }
     
     file { 'sudoers.d':
         ensure  => directory,
-        path    => '/etc/sudoers.d',
+        path    => '/etc/sudoers.d/',
+        source  => 'puppet:///modules/redelinux/etc/sudoers.d/',
         owner   => root,
         group   => root,
-        mode    => 440,
-        source  => 'puppet:///modules/redelinux/etc/sudoers.d/',
+        mode    => '0440',
         recurse => remote,
         require => Package['sudo'],
     }
