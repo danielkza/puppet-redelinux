@@ -1,33 +1,53 @@
+import stdlib
+
 class video_device
 {
 }
 
 define video_device::device(
 	$vendor              = undef,
+	$allow_proprietary   = false,
 	$install_control     = true,
 	$install_video_accel = true,
 	$install_extra       = true
 ) {
-	notice("Vendor: ${video_device_vendors}")
-	$vendor_real = $video_device_vendors ? {
-		/(?i)amd/      => 'amd',
-		/(?i)intel/    => 'intel',
-		/(?i)nvidia/   => 'nvidia',
-		default     => undef
+	if $vendor == undef {
+		$vendor_real = split($video_device_vendors, ' ')
+	} else {
+		$vendor_real = $vendor
 	}
 
-	if $vendor_real != undef {
-		include "video_device::vendor::${vendor_real}"
+	define install_driver_for_vendor($allow_proprietary, $ensure)
+	{
+		if $allow_proprietary {
+			$pref_var = 'pref_proprietary'
+		} else {
+			$pref_var = 'pref_free'
+		}
 
-		if $install_control {
-			Package <| tag == 'video_device::vendor::control' |>
+		$driver = getvar("video_device::vendor::${title}::${pref_var}")
+		if $driver != undef:
+			class { "video_device::vendor::${title}::${driver}":
+				ensure => $ensure
+			}
 		}
-		if $install_video_accel {
-			Package <| tag == 'video_device::vendor::video_accel' |>
-		}
-		if $install_extra {
-			Package <| tag == 'video_device::vendor::extra' |>
-		}
+	}
+
+	install_driver_for_vendor { $vendor_real:
+		allow_proprietary => $allow_proprietary,
+		ensure => $ensure
+	}
+
+	if $install_control {
+		Package <| tag == 'video_device::vendor::control' |>
+	}
+	if $install_video_accel {
+		Package <| tag == 'video_device::vendor::video_accel' |>
+	}
+	if $install_extra {
+		Package <| tag == 'video_device::vendor::extra' |>
 	}
 }
+
+
 
