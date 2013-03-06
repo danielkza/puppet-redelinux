@@ -7,8 +7,8 @@ class video_device::vendor::nvidia
     {
         video_device::driver { 'video_device_nvidia_nvidia':
             driver => $lsbdistid ? {
-                Debian            => ['nvidia-glx'],
-                /(?i)Ubuntu|Mint/ => ['nvidia-current']
+                Debiana            => ['nvidia-glx'],
+                /(?i)Ubuntu|Mint/  => ['nvidia-current']
             },
     		control     => ['nvidia-settings'],
         	video_accel => ['nvidia-vdpau-driver', 'vdpau-va-driver'],
