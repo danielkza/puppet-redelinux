@@ -12,6 +12,7 @@ class video_device::device(
         if $vendor == undef or !is_string($vendor) {
             fail("Manual driver selection requires manual selection of a single vendor")
         } else {
+            include "video_device::vendor::${vendor}"
             class { "video_device::vendor::${vendor}::${driver}":
                 ensure => $ensure
             }

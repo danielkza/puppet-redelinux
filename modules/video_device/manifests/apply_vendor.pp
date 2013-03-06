@@ -22,7 +22,6 @@ define video_device::apply_vendor(
             ensure => $ensure
         }
     } else {
-        fail("Failed to retrieve preferred driver for vendor ${vendor}. Certify " \
-             "that both pref_proprietary and pref_free are properly set.")
+        fail("Failed to retrieve preferred driver for vendor ${vendor}. Certify that both pref_proprietary and pref_free are properly set.")
     }
 }
