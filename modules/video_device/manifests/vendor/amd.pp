@@ -1,26 +1,29 @@
-class video_device::vendor::amd
+class video_device::vendor::nvidia
 {
-    $pref_free        = 'xf86_video_ati'
-    $pref_proprietary = 'catalyst'
+    $pref_free        = 'nvidia'
+    $pref_proprietary = 'nouveau'
 
-    class catalyst
+    class nvidia inherits video_device::vendor_base
     {
-    	video_device::driver { 'video_device_amd_catalyst':
-    		driver => $lsbdistid ? {
-    			'Debian' => ['fglrx-driver', 'fglrx-modules-dkms'],
-    			'Ubuntu' => ['fglrx'],
-    		},
-    		control     => ['fglrx-control'],
-    		video_accel => ['xvba-va-driver'],
-            type        => 'proprietary'
-    	}
+        video_device::driver { 'video_device_nvidia_nvidia':
+            driver => $lsbdistid ? {
+                Debian        => ['nvidia-glx'],
+                /Ubuntu|Mint/ => ['nvidia-current']
+            },
+            control     => ['nvidia-settings'],
+            video_accel => ['nvidia-vdpau-driver', 'vdpau-va-driver'],
+            type        => 'proprietary',
+        }
     }
 
-    class xf86_video_ati
+    class nouveau inherits video_device::vendor_base
     {
-        video_device::driver { 'video_device_amd_xf86_video_ati':
-            driver      => 'xserver-xorg-video-ati',
-            type        => 'free'
+        video_device::driver { 'video_device_nvidia_nouveau':
+            driver => $lsbdistid ? {
+                Debian        => ['xserver-xorg-video-nouveau'],
+                /Ubuntu|Mint/ => ['xserver-xorg-video-nouveau', 'nouveau-firmware']
+            },
+            type   => 'free',
         }
     }
 }
