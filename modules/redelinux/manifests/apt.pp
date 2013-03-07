@@ -3,8 +3,8 @@ class redelinux::apt(
 ) {
     include redelinux::params
 
-    anchor { 'redelinux::apt::begin',
-             'redelinux::apt::end': }
+    anchor { ['redelinux::apt::begin',
+              'redelinux::apt::end']: }
 
     Anchor['redelinux::apt::begin']
     -> Class['::apt', '::apt::backports']
