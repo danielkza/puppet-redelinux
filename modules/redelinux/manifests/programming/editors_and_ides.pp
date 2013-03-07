@@ -11,7 +11,7 @@ class redelinux::programming::editors_and_ides
     ## Eclipse
     package { 'eclipse': }
     ## Code::blocks
-    if $params::debian_pre_wheezy
+    if $redelinux::params::debian_pre_wheezy
     {
         apt::force { 'codeblocks': 
             release  => 'wheezy',

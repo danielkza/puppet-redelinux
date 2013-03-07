@@ -26,7 +26,7 @@ class redelinux::programming::languages
     # Erlang
     package { 'erlang': }
     # Java
-    if $params::debian_pre_wheezy
+    if $redelinux::params::debian_pre_wheezy
     {
         package { 'openjdk-6-jdk': }
     } else {
@@ -59,7 +59,7 @@ class redelinux::programming::languages
     package { 'clisp': }
     # Scheme
     package { 'racket': }
-    if $params::debian_pre_wheezy
+    if $redelinux::params::debian_pre_wheezy
     {
         Package['racket'] {
             require => Class['apt::backports']

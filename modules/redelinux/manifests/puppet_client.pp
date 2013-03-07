@@ -9,7 +9,7 @@ class redelinux::puppet_client
 
     service { 'puppet':
         ensure  => running,
-        enabled => true,
+        enable => true,
     }
 
     # Puppet's config files

@@ -4,7 +4,7 @@ class redelinux::apt(
     include redelinux::params
 
     $mirror_real = $mirror ? {
-        undef   => $params::debian_mirror,
+        undef   => $redelinux::params::debian_mirror,
         default => $mirror
     }
 
@@ -13,7 +13,7 @@ class redelinux::apt(
         purge_sources_list_d => true,
     }
 
-    if $params::debian_pre_wheezy
+    if $redelinux::params::debian_pre_wheezy
     {
         # Add backports repo
         class { '::apt::backports': }

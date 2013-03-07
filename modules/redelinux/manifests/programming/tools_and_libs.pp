@@ -61,7 +61,7 @@ class redelinux::programming::tools_and_libs
     package { 'libsdl-ruby': }
     ## Allegro
     package { 'liballegro-dev':
-        name => $params::debian_pre_wheezy ? {
+        name => $redelinux::params::debian_pre_wheezy ? {
             true    => 'liballegro4-dev',
             default => 'liballegro4.2-dev'
         }
