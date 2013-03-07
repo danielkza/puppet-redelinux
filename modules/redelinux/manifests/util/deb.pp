@@ -3,14 +3,13 @@ define redelinux::util::deb(
     $path   = undef,
     $ensure = present
 ) {
-    @file { "deb::default_install_path":
-        ensure => directory,
-        path   => "/var/${module_name}-packages/",
-        before => "deb::${name}",
-    }
-    
     if $path == undef {
-        File<| title == "deb::default_install_path" |>
+        @file { "deb::${name}::default_install_path":
+            ensure => directory,
+            path   => "/var/${module_name}-packages/",
+            before => "deb::${name}",
+        }
+        
         $path_real = "/var/${module_name}-packages/${name}.deb"
     } else {
         $path_real = $path
