@@ -10,8 +10,10 @@ class redelinux::apt(
 
     class { '::apt': 
         purge_sources_list   => true,
-        purge_sources_list_d => true
+        purge_sources_list_d => true,
     }
+
+    Class['apt'] -> Apt::Source<| |> -> Anchor['redelinux::apt::end'] 
 
     if $params::debian_pre_wheezy
     {
@@ -60,4 +62,6 @@ class redelinux::apt(
         key         => 'EEA14886',
         key_server  => 'keyserver.ubuntu.com',
     }
+
+    anchor { 'redelinux::apt::end': }
 }
