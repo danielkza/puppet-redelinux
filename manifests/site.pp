@@ -1,15 +1,23 @@
 node base
 {
-    include redelinux
-    include redelinux::network
-    include redelinux::apt
+    stage { ['pre-deploy', 'apt']: }
+    Stage['pre-deploy'] -> Stage['apt'] -> Stage['main']
+
+    class { 'redelinux::network':
+        stage => 'pre-deploy'
+    }
+
+    class { 'redelinux::apt':
+        stage => 'apt'
+    }
+
     include redelinux::ntp
     include redelinux::kerberos
     include redelinux::ldap
     include redelinux::nfs
-    include redelinux::nsswitch
-    #include redelinux::ssh
-
+    include redelinux::ssh
+    #include redelinux::sudo
+    # include redelinux::desktop
     include redelinux::programming
 
 }
@@ -20,5 +28,5 @@ node /^puppet/ inherits base
 
 node default inherits base
 {
-	include redelinux::puppet_client
+    include redelinux::puppet_client
 }
