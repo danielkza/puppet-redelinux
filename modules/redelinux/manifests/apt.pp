@@ -51,4 +51,13 @@ class redelinux::apt(
         key               => '4BD6EC30',
         key_server        => 'subkeys.pgp.net'
     }
+
+    ::apt::source { 'sublime-text':
+        location    => 'http://ppa.launchpad.net/webupd8team/sublime-text-2/ubuntu',
+        repos       => 'main',
+        release     => 'precise',
+        include_src => true,
+        key         => 'EEA14886',
+        key_server  => 'keyserver.ubuntu.com',
+    }
 }

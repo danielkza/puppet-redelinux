@@ -52,14 +52,7 @@ class redelinux::programming::editors_and_ides
     ## SciTE
     package { 'scite': }
     ## Sublime Text
-    apt::source { 'sublime-text':
-        location    => 'http://ppa.launchpad.net/webupd8team/sublime-text-2/ubuntu',
-        repos       => 'main',
-        release     => 'precise',
-        include_src => true,
-        key         => 'EEA14886',
-        key_server  => 'keyserver.ubuntu.com',
-    }
+    # check apt class for repo
     package { 'sublime-text':
         require => Apt::Source['sublime-text']
     }
