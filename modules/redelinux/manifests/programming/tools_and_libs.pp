@@ -1,4 +1,4 @@
-class redelinux::programming::tools_libs
+class redelinux::programming::tools_and_libs
 {
     Package {
         ensure => latest,
@@ -20,7 +20,7 @@ class redelinux::programming::tools_libs
     package { 'ruby-qt4': }
     package { ['python-qt4', 'python3-pyqt4']: }
 
-    # Wx-widgets
+    # WxWidgets
     package { ['wx-common', 'wx-i18n', 'wx2.8-doc', 'wx2.8-examples',
                'wx2.8-headers', 'wx2.8-i18n', 'libwxgtk2.8-dev']: }
     package { ['python-wxgtk2.8', 'python-wxtools']: }
@@ -43,6 +43,8 @@ class redelinux::programming::tools_libs
     package { 'libsqlite3-dev': }
     package { 'python-pysqlite2': }
     package { 'libsqlite3-ruby': }
+    ## PostgreSQL
+    # TODO
 
     # Graphics
     ## FreeGLUT
@@ -55,12 +57,24 @@ class redelinux::programming::tools_libs
                'libsdl-ttf2.0-dev']: }
     package { 'libsdl-ruby': }
     ## Allegro
-    $allegro_version='4'
-    if $redelinux::debian_pre_wheezy
-    {
-        $allegro_version='4.2'
+    package { 'liballegro-dev':
+        name => $redelinux::debian_pre_wheezy ? {
+            true    => 'liballegro4-dev',
+            default => 'liballegro4.2-dev'
+        }
     }
-    package { 'liballegro${allegro_version}-dev': }
-    # PyGame
+    ## PyGame
     package { 'python-pygame': }
+
+    # Source control
+    ## Git
+    package { ['git', 'git-man']: }
+    ## Mercurial
+    package { 'mercurial': }
+    ## CVS
+    package { 'cvs': }
+    ## SVN
+    package { 'subversion': }
+    ## Bazaar
+    package { 'bzr': }
 }

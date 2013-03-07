@@ -15,6 +15,7 @@ class redelinux::programming::languages
     # Fortran
     package { 'gfortran': }
     # C, C++
+    package { 'build-essential': }
     package { ['gcc', 'g++', 'libc-dev']: }
     package { 'clang': }
     package { ['make', 'automake', 'autoconf']: }
@@ -52,16 +53,15 @@ class redelinux::programming::languages
     # Mono
     package { 'mono-complete': }
     # Assembly
-    package { ['nasm', 'gas', 'yasm']: }
+    package { ['nasm', 'yasm']: }
     # Lisp
     package { 'clisp': }
     # Scheme
+    package { 'racket': }
     if $redelinux::debian_pre_wheezy
     {
-        package { 'racket':
-        require => Apt::Backports
+        Package['racket'] {
+            require => Apt::Backports
         }
-    } else {
-    package { 'racket': }
     }
 }
