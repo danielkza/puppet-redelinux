@@ -1,5 +1,7 @@
 class redelinux::ssh
 {
+    require redelinux::apt
+    
     class server
     {
         package { 'openssh-server':

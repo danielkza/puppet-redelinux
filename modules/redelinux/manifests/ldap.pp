@@ -1,5 +1,7 @@
 class redelinux::ldap
-{            
+{
+    require redelinux::apt
+
     # LDAP
     $ldap = ['libnss-ldapd', 'libsasl2-modules-gssapi-mit', 'kstart']
 
