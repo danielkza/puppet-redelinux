@@ -7,7 +7,7 @@ class redelinux::apt(
               'redelinux::apt::end']: }
 
     Anchor['redelinux::apt::begin']
-    -> Class['::apt', '::apt::backports']
+    -> Class['::apt']
     -> Anchor['redelinux::apt::end']
 
     $mirror_real = $mirror ? {
@@ -20,10 +20,12 @@ class redelinux::apt(
         purge_sources_list_d => true,
     }
 
-    Class['::apt'] -> Apt::Source<| |> -> Anchor['redelinux::apt::end'] 
-
     if $params::debian_pre_wheezy
     {
+        Anchor['redelinux::apt::begin']
+        -> Class['::apt::backports']
+        -> Anchor['redelinux::apt::end']
+
         # Add backports repo
         class { '::apt::backports': }
 
