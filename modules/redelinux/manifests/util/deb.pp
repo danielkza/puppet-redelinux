@@ -35,7 +35,7 @@ define redelinux::util::deb(
         $path_real = $path
     }
     
-    create_file_dir { $path_real: }
+    redelinux::util::deb::create_file_dir { $path_real: }
 
     # The require is probably not needed, but being explicit usually helps
     file { "deb::${title}":
