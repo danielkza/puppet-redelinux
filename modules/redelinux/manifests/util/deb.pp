@@ -4,7 +4,14 @@ define redelinux::util::deb(
     $ensure = present
 ) {
     if $path == undef {
+        file { "deb::install_path":
+            ensure => directory,
+            path   => "/var/${module_name}-packages/",
+            before => "deb::${name}",
+        }
+
         $path_real = "/var/${module_name}-packages/${name}.deb"
+
     } else {
         $path_real = $path
     }
