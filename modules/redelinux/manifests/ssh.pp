@@ -3,7 +3,7 @@ class redelinux::ssh
     require redelinux::apt
     
     anchor { ['redelinux::ssh::begin',
-              'redelinux::ssh::end':] }
+              'redelinux::ssh::end']: }
 
     Anchor['redelinux::ssh::begin']
     -> Class['server', 'client']
