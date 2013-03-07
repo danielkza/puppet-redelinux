@@ -1,6 +1,7 @@
 class redelinux::programming::editors_and_ides
 {   
     include redelinux::apt
+    include redelinux::params
 
     Package {
         ensure => latest,
@@ -10,7 +11,7 @@ class redelinux::programming::editors_and_ides
     ## Eclipse
     package { 'eclipse': }
     ## Code::blocks
-    if $redelinux::debian_pre_wheezy
+    if $params::debian_pre_wheezy
     {
         apt::force { 'codeblocks': 
             release  => 'wheezy',

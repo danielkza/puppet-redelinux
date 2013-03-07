@@ -1,13 +1,19 @@
-class redelinux::apt
-{
+class redelinux::apt(
+    $mirror = undef
+) {
+    include redelinux::params
+
+    $mirror_real = $mirror ? {
+        undef   => $params::debian_mirror,
+        default => $mirror
+    }
+
     class { '::apt': 
         purge_sources_list   => true,
         purge_sources_list_d => true
     }
 
-    $debian_mirror = 'http://sft.if.usp.br/debian/'
-
-    if $redelinux::debian_pre_wheezy
+    if $params::debian_pre_wheezy
     {
         # Add backports repo
         class { '::apt::backports': }
@@ -15,7 +21,7 @@ class redelinux::apt
         # Add testing repo. Very low priority, so by default nothing will
         # ever be installed from it
         ::apt::source { 'debian_wheezy': 
-            location          => $debian_mirror,
+            location          => $mirror_real,
             release           => 'wheezy',
             repos             => 'main contrib non-free',
             include_src       => true,
@@ -25,7 +31,7 @@ class redelinux::apt
     }
 
     ::apt::source { "debian_${::lsbdistcodename}":
-        location          => $debian_mirror,
+        location          => $mirror_real,
         repos             => 'main contrib non-free',
         include_src       => true,
         required_packages => 'debian-keyring debian-archive-keyring',

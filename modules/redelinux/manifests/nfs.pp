@@ -1,5 +1,7 @@
 class redelinux::nfs
-{   
+{
+    include redelinux::params
+
     $nfs = 'nfs-common'
 
     # NFS
@@ -32,7 +34,7 @@ class redelinux::nfs
         require => Package[$nfs],
     }
 
-    $autofs_service_hasstatus = !$redelinux::debian_pre_wheezy
+    $autofs_service_hasstatus = !$params::debian_pre_wheezy
     service { 'autofs':
         ensure    => running,
         enable    => true,

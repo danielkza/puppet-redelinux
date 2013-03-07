@@ -1,5 +1,7 @@
 class redelinux::network
 {
+    include redelinux::params
+
     # Fix debian's weird hosts file
     host { "$hostname":
         ensure => absent,
@@ -12,7 +14,7 @@ class redelinux::network
     }
     
     # Fix Debian's stupid habit of not sending hostname on DHCP requests
-    if $redelinux::debian_pre_wheezy
+    if $params::debian_pre_wheezy
     {
         util::config_file { 'dhclient_hostname_hook':
             path   => '/etc/dhcp/dhclient-enter-hooks.d/hostname',
