@@ -3,6 +3,13 @@ class redelinux::apt(
 ) {
     include redelinux::params
 
+    anchor { 'redelinux::apt::begin',
+             'redelinux::apt::end': }
+
+    Anchor['redelinux::apt::begin']
+    -> Class['::apt', '::apt::backports']
+    -> Anchor['redelinux::apt::end']
+
     $mirror_real = $mirror ? {
         undef   => $params::debian_mirror,
         default => $mirror
@@ -13,7 +20,7 @@ class redelinux::apt(
         purge_sources_list_d => true,
     }
 
-    Class['apt'] -> Apt::Source<| |> -> Anchor['redelinux::apt::end'] 
+    Class['::apt'] -> Apt::Source<| |> -> Anchor['redelinux::apt::end'] 
 
     if $params::debian_pre_wheezy
     {
@@ -62,6 +69,4 @@ class redelinux::apt(
         key         => 'EEA14886',
         key_server  => 'keyserver.ubuntu.com',
     }
-
-    anchor { 'redelinux::apt::end': }
 }

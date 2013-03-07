@@ -2,6 +2,13 @@ class redelinux::ssh
 {
     require redelinux::apt
     
+    anchor { 'redelinux::ssh::begin',
+             'redelinux::ssh::end': }
+
+    Anchor['redelinux::ssh::begin']
+    -> Class['server', 'client']
+    -> Anchor['redelinux::ssh::end']
+
     class server
     {
         package { 'openssh-server':
