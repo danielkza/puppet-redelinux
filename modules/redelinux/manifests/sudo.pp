@@ -6,7 +6,7 @@ class redelinux::sudo
     }
 
     # Sudo's config files
-    config_file { 'sudoers':
+    util::config_file { 'sudoers':
         path    => '/etc/sudoers',
         mode    => '0440',
         require => Package['sudo'],

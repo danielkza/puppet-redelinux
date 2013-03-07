@@ -1,7 +1,5 @@
 class redelinux::ldap
-{
-    include redelinux::util
-            
+{            
     # LDAP
     $ldap = ['libnss-ldapd', 'libsasl2-modules-gssapi-mit', 'kstart']
 
@@ -28,7 +26,7 @@ class redelinux::ldap
         require => Package[$ldap],
     }
             
-    config_file { 'nslcd.conf':
+    util::util::config_file { 'nslcd.conf':
         path    => '/etc/nslcd.conf',
         require => Package[$ldap],
         notify  => Service['nslcd'],
