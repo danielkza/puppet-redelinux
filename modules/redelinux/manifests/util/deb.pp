@@ -1,5 +1,4 @@
 define redelinux::util::deb(
-    $name   = $title,
     $source = 'puppet:///modules/${::module_name}/packages/${name}.deb',
     $path   = undef,
     $ensure = present
