@@ -17,7 +17,7 @@ class redelinux::apt
         ::apt::source { 'debian_wheezy': 
             location          => $debian_mirror,
             release           => 'wheezy',
-            repos             => 'main contrib non-free'
+            repos             => 'main contrib non-free',
             include_src       => true,
             required_packages => 'debian-keyring debian-archive-keyring',
             pin               => '-10',
@@ -31,9 +31,18 @@ class redelinux::apt
         required_packages => 'debian-keyring debian-archive-keyring',
     }
 
+    ::apt::source { 'debian_${lsbdistcodename}_updates':
+        location          => 'http://security.debian.org',
+        repos             => 'main',
+        release           => "${lsbdistcodename}/updates"
+        include_src       => true,
+        required_packages => 'debian-keyring debian-archive-keyring',
+    }
+
     ::apt::source { 'puppetlabs':
         location          => 'http://apt.puppetlabs.com',
         repos             => 'main',
+        include_src       => true,
         required_packages => 'debian-keyring debian-archive-keyring',
     }
 }
