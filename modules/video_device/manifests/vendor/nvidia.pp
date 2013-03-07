@@ -14,8 +14,9 @@ class video_device::vendor::nvidia
     {
         video_device::driver { 'video_device_nvidia_nvidia':
             driver => $lsbdistid ? {
-                Debian         => ['nvidia-glx', 'nvidia-xconfig'],
-                /Ubuntu|Mint/  => ['nvidia-current', 'nvidia-xconfig']
+                Debian        => ['nvidia-glx', 'nvidia-xconfig'],
+                /Ubuntu|Mint/ => ['nvidia-current', 'nvidia-xconfig'],
+                default       => fail("Unknown operating system")
             },
     		control     => ['nvidia-settings'],
         	video_accel => ['nvidia-vdpau-driver', 'vdpau-va-driver'],
@@ -36,8 +37,9 @@ class video_device::vendor::nvidia
     {
         video_device::driver { 'video_device_nvidia_nouveau':
             driver => $lsbdistid ? {
-                Debian          => ['xserver-xorg-video-nouveau'],
-                /Ubuntu|Mint/   => ['xserver-xorg-video-nouveau', 'nouveau-firmware']
+                Debian         => ['xserver-xorg-video-nouveau'],
+                /Ubuntu|Mint/ => ['xserver-xorg-video-nouveau', 'nouveau-firmware'],
+                default       => fail("Unknown operating system")
             },
             type   => 'free',
             ensure => $ensure

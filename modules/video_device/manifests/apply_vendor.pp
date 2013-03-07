@@ -13,15 +13,24 @@ define video_device::apply_vendor(
     } else {
         $pref_var = 'pref_free'
     }
-
-    include "video_device::vendor::${title}"
-
-    $driver = getvar("video_device::vendor::${vendor}::${pref_var}")
-    if $driver != undef {
-        class { "video_device::vendor::${title}::${driver}":
-            ensure => $ensure
-        }
+    
+    if !defined("video_device::vendor::${vendor}") {
+        fail("Invalid driver vendor '{$vendor}'")
     } else {
-        fail("Failed to retrieve preferred driver for vendor ${vendor}. Certify that both pref_proprietary and pref_free are properly set.")
-    }
+	    include "video_device::vendor::${vendor}"
+	
+	    $driver = getvar("video_device::vendor::${vendor}::${pref_var}")
+	    
+	    if !is_string($driver) {
+	        fail("Failed to retrieve preferred driver for vendor ${vendor}. Certify that both pref_proprietary and pref_free are properly set.")
+	    } else {
+	        if !defined( "video_device::vendor::${vendor}::${driver}") {
+	            fail("Invalid driver '${driver}' for vendor '${vendor}'")
+	        } else {		      
+		        class { "video_device::vendor::${title}::${driver}":
+		            ensure => $ensure
+		        }
+		    }
+	    }
+	}
 }

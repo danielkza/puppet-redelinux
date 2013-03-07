@@ -9,17 +9,24 @@ class video_device::device(
 ) {
     # Manual driver was selected, don't do any automatic selection logic
     if $driver != undef {
-        if $vendor == undef or !is_string($vendor) {
-            fail("Manual driver selection requires manual selection of a single vendor")
+        if !is_string($vendor) {
+            fail('Selecting a driver requires selecting exactly one vendor')
+        } elsif !defined("video_device::vendor::${vendor}") {
+            fail("Invalid vendor ${vendor}")
         } else {
             include "video_device::vendor::${vendor}"
-            class { "video_device::vendor::${vendor}::${driver}":
-                ensure => $ensure
-            }
+            
+            if !defined("video_device::vendor::${vendor}::${driver}") {
+                fail("Invalid driver ${driver} for vendor ${vendor}")
+            } else {	            
+	            class { "video_device::vendor::${vendor}::${driver}":
+	                ensure => $ensure
+	            }
+	        }
         }
     } else {
         if $vendor == undef {
-            $vendor_real = split($video_device_vendors, ' ')
+            $vendor_real = split($::video_device_vendors, ' ')
         } else {
             $vendor_real = $vendor
         }

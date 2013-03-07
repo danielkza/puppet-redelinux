@@ -7,22 +7,22 @@ class video_device::vendor::amd
         path => ['/bin/', '/sbin/',
                  '/usr/bin/', '/usr/sbin/',
                  '/usr/local/bin/', '/usr/local/sbin/']
-        ]
     }
 
     class catalyst($ensure)
     {
-    	video_device::driver { 'video_device_amd_catalyst':
-    		driver => $lsbdistid ? {
-    			Debian        => ['fglrx-driver', 'fglrx-modules-dkms'],
-    			/Ubuntu|Mint/ => ['fglrx'],
-    		},
-    		control     => ['fglrx-control'],
-    		video_accel => ['xvba-va-driver'],
-            type        => 'proprietary',
-            ensure      => $ensure,
-            notify      => Exec["aticonfig"]
-    	}
+		video_device::driver { 'video_device_amd_catalyst':
+			driver => $lsbdistid ? {
+				Debian        => ['fglrx-driver', 'fglrx-modules-dkms'],
+				/Ubuntu|Mint/ => ['fglrx'],
+                default       => fail("Unknown operating system")
+			},
+			control     => ['fglrx-control'],
+			video_accel => ['xvba-va-driver'],
+			type        => 'proprietary',
+			ensure      => $ensure,
+			notify      => Exec["aticonfig"]
+		}
 
         exec { "aticonfig":
             command     => 'aticonfig --initial',
