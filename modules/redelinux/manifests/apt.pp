@@ -24,25 +24,25 @@ class redelinux::apt
         }
     }
 
-    ::apt::source { "debian_${lsbdistcodename}":
+    ::apt::source { "debian_${::lsbdistcodename}":
         location          => $debian_mirror,
         repos             => 'main contrib non-free',
         include_src       => true,
         required_packages => 'debian-keyring debian-archive-keyring',
     }
 
-    ::apt::source { "debian_${lsbdistcodename}_security":
+    ::apt::source { "debian_${::lsbdistcodename}_security":
         location          => 'http://security.debian.org',
-        repos             => 'main',
-        release           => "${lsbdistcodename}/updates",
+        repos             => 'main contrib non-free',
+        release           => "${::lsbdistcodename}/updates",
         include_src       => true,
-        required_packages => 'debian-keyring debian-archive-keyring',
     }
 
     ::apt::source { 'puppetlabs':
         location          => 'http://apt.puppetlabs.com',
         repos             => 'main',
         include_src       => true,
-        required_packages => 'debian-keyring debian-archive-keyring',
+        key               => '4BD6EC30',
+        key_server        => 'subkeys.pgp.net'
     }
 }
