@@ -16,7 +16,7 @@ define redelinux::util::deb::create_file_dir(
             mode   => $mode,
         })
         
-        ensure_resource('create_file_dir', $path_parent, {
+        ensure_resource('redelinux::util::deb::create_file_dir', $path_parent, {
             owner => $owner,
             group => $group,
             mode  => $mode,
