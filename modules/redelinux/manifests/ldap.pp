@@ -36,4 +36,8 @@ class redelinux::ldap
 
     include redelinux::nsswitch
     Package[$ldap] -> Class['nsswitch']
+
+    anchor { 'redelinux::ldap::begin': }
+    -> Class['nsswitch']
+    -> anchor { 'redelinux::ldap::end': }
 }

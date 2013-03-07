@@ -1,13 +1,9 @@
 class redelinux::ssh
 {
     require redelinux::apt
-    
-    anchor { ['redelinux::ssh::begin',
-              'redelinux::ssh::end']: }
 
-    Anchor['redelinux::ssh::begin']
-    -> Class['server', 'client']
-    -> Anchor['redelinux::ssh::end']
+    anchor { ['redelinux::ssh::begin',
+              'redelinux::ssh::end':] }
 
     class server
     {
@@ -19,6 +15,9 @@ class redelinux::ssh
             path    => '/etc/ssh/sshd_config',
             require => Package['openssh-server']
         }
+
+        require => Anchor['redelinux::ssh::begin'],
+        before  => Anchor['redelinux::ssh::end'],
     }
 
     class client
@@ -31,5 +30,8 @@ class redelinux::ssh
             path    => '/etc/ssh/ssh_config',
             require => Package['openssh-client']
         }
+
+        require => Anchor['redelinux::ssh::begin'],
+        before  => Anchor['redelinux::ssh::end'],
     }
 }

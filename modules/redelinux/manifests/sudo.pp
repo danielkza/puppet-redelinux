@@ -1,5 +1,7 @@
 class redelinux::sudo
 {
+    require redelinux::apt
+    
     # Sudo
     package { 'sudo':
         ensure => present,

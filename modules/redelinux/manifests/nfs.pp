@@ -75,4 +75,10 @@ class redelinux::nfs
     # Apply nsswitch after installing autofs, and make changes to nsswitch
     # notify the autofs service.
     Package['autofs'] -> Class['nsswitch'] ~> Service['autofs']
+
+    # Stupid anchor
+    anchor { 'redelinux::nfs::begin': }
+    -> Class['nsswitch']
+    -> anchor { 'redelinux::nfs::end': }
+
 }

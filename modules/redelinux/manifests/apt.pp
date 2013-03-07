@@ -3,13 +3,6 @@ class redelinux::apt(
 ) {
     include redelinux::params
 
-    anchor { ['redelinux::apt::begin',
-              'redelinux::apt::end']: }
-
-    Anchor['redelinux::apt::begin']
-    -> Class['::apt']
-    -> Anchor['redelinux::apt::end']
-
     $mirror_real = $mirror ? {
         undef   => $params::debian_mirror,
         default => $mirror
@@ -22,10 +15,6 @@ class redelinux::apt(
 
     if $params::debian_pre_wheezy
     {
-        Anchor['redelinux::apt::begin']
-        -> Class['::apt::backports']
-        -> Anchor['redelinux::apt::end']
-
         # Add backports repo
         class { '::apt::backports': }
 
@@ -39,6 +28,11 @@ class redelinux::apt(
             required_packages => 'debian-keyring debian-archive-keyring',
             pin               => '-10',
         }
+
+        # Stupid anchor
+        Anchor['redelinux::apt::begin']
+        -> Class['::apt::backports']
+        -> Anchor['redelinux::apt::end']
     }
 
     ::apt::source { "debian_${::lsbdistcodename}":
@@ -71,4 +65,10 @@ class redelinux::apt(
         key         => 'EEA14886',
         key_server  => 'keyserver.ubuntu.com',
     }
+
+    # Stupid anchor
+    anchor { 'redelinux::apt::begin': }
+    -> Class['::apt']
+    -> anchor {'redelinux::apt::end': }
+
 }
