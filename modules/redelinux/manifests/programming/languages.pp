@@ -36,8 +36,6 @@ class redelinux::programming::languages
     package { 'maven2': }
     # Scala
     package { 'scala': }
-    # PHP
-    package { 'php-cli': }
     # R
     package { 'r-recommended': }
     # Octave
