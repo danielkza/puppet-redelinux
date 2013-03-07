@@ -26,7 +26,7 @@ class redelinux::ldap
         require => Package[$ldap],
     }
             
-    util::util::config_file { 'nslcd.conf':
+    util::config_file { 'nslcd.conf':
         path    => '/etc/nslcd.conf',
         require => Package[$ldap],
         notify  => Service['nslcd'],

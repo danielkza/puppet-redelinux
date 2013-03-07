@@ -63,7 +63,7 @@ class redelinux::nfs
 
     util::config_file { 'nfs_profile':
         path       => '/etc/profile.d/nfs_path.sh',
-        executable => true,
+        mode       => 'a=rx,u+w',
         require    => Package['autofs'],
     }
 

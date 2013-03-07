@@ -24,17 +24,17 @@ class redelinux::apt
         }
     }
 
-    ::apt::source { 'debian_${lsbdistcodename}':
+    ::apt::source { "debian_${lsbdistcodename}":
         location          => $debian_mirror,
         repos             => 'main contrib non-free',
         include_src       => true,
         required_packages => 'debian-keyring debian-archive-keyring',
     }
 
-    ::apt::source { 'debian_${lsbdistcodename}_updates':
+    ::apt::source { "debian_${lsbdistcodename}_updates":
         location          => 'http://security.debian.org',
         repos             => 'main',
-        release           => "${lsbdistcodename}/updates"
+        release           => "${lsbdistcodename}/updates",
         include_src       => true,
         required_packages => 'debian-keyring debian-archive-keyring',
     }

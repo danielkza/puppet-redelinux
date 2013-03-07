@@ -17,7 +17,7 @@ define redelinux::util::config_file(
         path    => $path,
         content => $content,
         source  => $content ? {
-            undef   => "puppet://modules/${module_name}/${path}",
+            undef   => "puppet:///modules/${module_name}/${path}",
             default => undef,
         },
         replace => $replace,
