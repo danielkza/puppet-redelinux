@@ -1,14 +1,14 @@
 node base
 {
-    stage { ['pre-deploy', 'apt']: }
-    Stage['pre-deploy'] -> Stage['apt'] -> Stage['main']
+    #stage { ['pre-deploy', 'apt']: }
+    #Stage['pre-deploy'] -> Stage['apt'] -> Stage['main']
 
     class { 'redelinux::network':
-        stage => 'pre-deploy'
+    #    stage => 'pre-deploy'
     }
 
     class { 'redelinux::apt':
-        stage => 'apt'
+    #    stage => 'apt'
     }
 
     include redelinux::ntp

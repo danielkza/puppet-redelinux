@@ -1,5 +1,7 @@
 class redelinux::ntp
 {
+    require redelinux::apt
+
     # NTP
     package { 'ntp':
         ensure => present,

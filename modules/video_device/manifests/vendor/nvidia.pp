@@ -26,6 +26,7 @@ class video_device::vendor::nvidia
 
         exec { 'nvidia-xconfig':
             command     => 'nvidia-xconfig',
+            onlyif      => 'which nvidia-xconfig',
             unless      => shellquote('grep', '-Ei', 'Driver[[:blank:]]+"nvidia"', '/etc/X11/xorg.conf'),
             refreshonly => true
         }

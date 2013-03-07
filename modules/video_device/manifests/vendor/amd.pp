@@ -6,7 +6,7 @@ class video_device::vendor::amd
     Exec {
         path => ['/bin/', '/sbin/',
                  '/usr/bin/', '/usr/sbin/',
-                 '/usr/local/bin/', '/usr/local/sbin/'
+                 '/usr/local/bin/', '/usr/local/sbin/']
         ]
     }
 
@@ -25,8 +25,9 @@ class video_device::vendor::amd
     	}
 
         exec { "aticonfig":
-            command     => "aticonfig --initial",
-            unless      => "aticonfig --initial=check",
+            command     => 'aticonfig --initial',
+            onlyif      => 'which aticonfig',
+            unless      => 'aticonfig --initial=check',
             refreshonly => true
         }
     }

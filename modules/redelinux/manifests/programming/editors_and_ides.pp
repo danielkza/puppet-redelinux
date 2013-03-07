@@ -1,6 +1,6 @@
 class redelinux::programming::editors_and_ides
 {   
-    include redelinux::apt
+    require redelinux::apt
     include redelinux::params
 
     Package {

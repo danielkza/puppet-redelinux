@@ -1,5 +1,7 @@
 class redelinux::puppet_client
 {
+    require redelinux::apt
+
     # Puppet
     package { 'puppet':
         ensure  => latest,
