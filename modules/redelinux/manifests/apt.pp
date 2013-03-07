@@ -31,7 +31,7 @@ class redelinux::apt
         required_packages => 'debian-keyring debian-archive-keyring',
     }
 
-    ::apt::source { "debian_${lsbdistcodename}_updates":
+    ::apt::source { "debian_${lsbdistcodename}_security":
         location          => 'http://security.debian.org',
         repos             => 'main',
         release           => "${lsbdistcodename}/updates",
