@@ -5,9 +5,7 @@ define redelinux::util::deb::create_file_dir(
     $mode  = undef
 )
 {
-    if !validate_absolute_path($path) {
-        fail("Invalid path ${path}")
-    }
+    validate_absolute_path($path)
     
     $path_parent = regsubst($path, '/[^/]*$', '')
     if $path_parent != "" {
@@ -37,12 +35,14 @@ define redelinux::util::deb(
         $path_real = $path
     }
     
-    redelinux::util::deb::create_file_dir { $path_real: }
+    create_file_dir { $path_real: }
 
+    # The require is probably not needed, but being explicit usually helps
     file { "deb::${title}":
-        ensure => file,
-        source => $source,
-        path   => $path_real,
+        ensure  => file,
+        source  => $source,
+        path    => $path_real,
+        require => Create_file_dir[$path_real]
     }
 
     package { $title:
@@ -50,7 +50,7 @@ define redelinux::util::deb(
         ensure   => $ensure,
         provider => dpkg,
         source   => $path_real,
-        require  => File["deb::${name}"],
+        require  => File["deb::${title}"],
     }
 }
 
