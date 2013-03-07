@@ -2,6 +2,7 @@ define redelinux::util::deb(
     $name   = $title,
     $source = 'puppet:///modules/${::module_name}/packages/${name}.deb',
     $path   = undef,
+    $ensure = present
 ) {
     if $path == undef {
         $path_real = "/var/${::module_name}-packages/${name}.deb"
@@ -16,6 +17,7 @@ define redelinux::util::deb(
     }
 
     package { $name:
+        ensure   => $ensure,
         provider => dpkg,
         source   => $path_real,
         require  => File["deb::${name}"],
