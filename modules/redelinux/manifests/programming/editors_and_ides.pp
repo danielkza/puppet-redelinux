@@ -29,9 +29,9 @@ class redelinux::programming::editors_and_ides
     ## KDevelop
     package { 'kdevelop': }
     ## IntelliJ IDEA
-    util::deb { 'intellij-idea-ic-12.0.4':
-        ensure => present
-    }
+    #util::deb { 'intellij-idea-ic-12.0.4':
+    #    ensure => present
+    #}
     ## Netbeans
     package { 'netbeans': }
 
@@ -40,7 +40,7 @@ class redelinux::programming::editors_and_ides
     package { ['vim', 'vim-gnome', 'vim-latexsuite', 'vim-puppet', 'vim-rails',
                'vim-scripts', 'vim-syntax-go']: }
     ## the other one
-    package { ['emacs', 'xemacs21']: }
+    package { 'emacs': }
     ## nano
     package { 'nano': }
     ## Gedit
