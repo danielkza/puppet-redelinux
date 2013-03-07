@@ -28,10 +28,10 @@ class redelinux::programming::editors_and_ides
     }
     ## KDevelop
     package { 'kdevelop': }
-    ## IntelliJ IDEA
-    #util::deb { 'intellij-idea-ic-12.0.4':
-    #    ensure => present
-    #}
+    # IntelliJ IDEA
+    util::deb { 'intellij-idea-ic-12.0.4':
+        ensure => present
+    }
     ## Netbeans
     package { 'netbeans': }
 
