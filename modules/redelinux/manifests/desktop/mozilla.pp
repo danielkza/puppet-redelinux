@@ -2,7 +2,7 @@ class redelinux::desktop::mozilla
 {
     include redelinux::apt
     
-    if $redelinux::params::debian_pre_wheezy {      
+    if !$redelinux::params::debian_pre_wheezy {      
         apt::source { 'mozilla':
             location    => 'http://mozilla.debian.net',
             repos       => 'main',
@@ -12,8 +12,8 @@ class redelinux::desktop::mozilla
     } else {
         apt::source { 'mozilla':
             location          => 'http://mozilla.debian.net',
-            repos             => 'squeeze-backports',
-            release           => 'iceweasel-release',
+            repos             => 'iceweasel-release',
+            release           => 'squeeze-backports',
             required_packages => 'pkg-mozilla-archive-keyring',
             include_src => true,
         }      
