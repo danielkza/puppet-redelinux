@@ -17,7 +17,10 @@ node base
     include redelinux::nfs
     include redelinux::ssh
     #include redelinux::sudo
-    # include redelinux::desktop
+    
+    include redelinux::desktop::apps
+    include redelinux::desktop::mozilla 
+    
     include redelinux::programming
 
 }
