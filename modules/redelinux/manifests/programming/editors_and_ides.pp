@@ -1,6 +1,6 @@
 class redelinux::programming::editors_and_ides
 {   
-    require redelinux::apt
+    include redelinux::apt
     include redelinux::params
 
     Package {
@@ -11,14 +11,6 @@ class redelinux::programming::editors_and_ides
     ## Eclipse
     package { 'eclipse': }
     ## Code::blocks
-    if $redelinux::params::debian_pre_wheezy
-    {
-        apt::force { 'codeblocks': 
-            release  => 'wheezy',
-            require  => Apt::Source['debian_wheezy'],
-            before   => Package['codeblocks'],
-        }
-    }
     package { 'codeblocks': }
     ## Monodevelop
     package { 'monodevelop': }
@@ -52,7 +44,15 @@ class redelinux::programming::editors_and_ides
     ## SciTE
     package { 'scite': }
     ## Sublime Text
-    # check apt class for repo
+    ::apt::source { 'sublime-text':
+        location    => 'http://ppa.launchpad.net/webupd8team/sublime-text-2/ubuntu',
+        repos       => 'main',
+        release     => 'precise',
+        include_src => true,
+        key         => 'EEA14886',
+        key_server  => 'keyserver.ubuntu.com',
+    }
+    
     package { 'sublime-text':
         require => Apt::Source['sublime-text']
     }

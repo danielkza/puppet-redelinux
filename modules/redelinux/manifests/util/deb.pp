@@ -3,25 +3,24 @@ define redelinux::util::deb::create_file_dir(
     $owner = undef,
     $group = undef,
     $mode  = undef
-)
-{
+) {
     validate_absolute_path($path)
     
     $path_parent = regsubst($path, '/[^/]*$', '')
-    if $path_parent != "" {
-        ensure_resource('file', $path_parent, { 
+    if $path_parent != "" and !defined(File[$path_parent]) {
+        file { $path_parent: 
             ensure => directory,
             owner  => $owner,
             group  => $group,
             mode   => $mode,
-        })
+        }
         
-        ensure_resource('redelinux::util::deb::create_file_dir', $path_parent, {
+        redelinux::util::deb::create_file_dir { $path_parent:
             owner => $owner,
             group => $group,
             mode  => $mode,
-        })
-    }  
+        }
+	}
 }
 
 define redelinux::util::deb(
@@ -37,7 +36,6 @@ define redelinux::util::deb(
     
     ensure_resource('redelinux::util::deb::create_file_dir', $path_real)
 
-    # The require is probably not needed, but being explicit usually helps
     file { "deb::${title}":
         ensure  => file,
         source  => $source,

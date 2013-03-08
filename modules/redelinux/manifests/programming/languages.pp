@@ -57,10 +57,4 @@ class redelinux::programming::languages
     package { 'clisp': }
     # Scheme
     package { 'racket': }
-    if $redelinux::params::debian_pre_wheezy
-    {
-        Package['racket'] {
-            require => Class['apt::backports']
-        }
-    }
 }
