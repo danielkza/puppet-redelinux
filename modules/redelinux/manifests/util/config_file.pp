@@ -12,7 +12,7 @@ define redelinux::util::config_file(
         } else {
             $source_real = $source
         }
-    } else if $source != undef {
+    } elsif $source != undef {
         fail("You must specify either content OR source")
     } else {
         $source_real = undef
