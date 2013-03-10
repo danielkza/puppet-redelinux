@@ -7,18 +7,14 @@ define redelinux::util::config_file(
 )
 {
     if $content == undef {
-        if $source == undef {
-            $source_real = "puppet:///modules/${caller_module_name}/${path}"
-        } else {
-            $source_real = $source
-        }
-    } elsif $source != undef {
-        fail("You must specify either content OR source")
+
+    } els
     } else {
         $source_real = undef
     }
 
-    file { $title:
+
+    File {
         ensure  => file,
         owner   => 'root',
         group   => 'root',
@@ -27,8 +23,27 @@ define redelinux::util::config_file(
             default => $mode,
         },
         path    => $path,
-        content => $content,
-        source  => $source_real,
         replace => $replace,
+    }
+
+    # Work around the fact that even passing content as undef sometimes
+    # causes the 'You cannot specify more than one of content, source, target'
+    # error.
+
+    if $content != undef {
+        if $source != undef {
+            fail("You must specify either content OR source")
+        }
+
+        file { $title: 
+            content => $content,
+        }
+    } else {
+        file { $title: 
+            source  => $source ? {
+                undef   => "puppet:///modules/${caller_module_name}/${path}",
+                default => $source,
+            },
+        }
     }
 }
