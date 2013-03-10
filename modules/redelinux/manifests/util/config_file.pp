@@ -6,6 +6,18 @@ define redelinux::util::config_file(
     $mode       = undef,
 )
 {
+    if $content == undef {
+        if $source == undef {
+            $source_real = "puppet:///modules/${caller_module_name}/${path}"
+        } else {
+            $source_real = $source
+        }
+    } else if $source != undef {
+        fail("You must specify either content OR source")
+    } else {
+        $source_real = undef
+    }
+
     file { $title:
         ensure  => file,
         owner   => 'root',
@@ -16,10 +28,7 @@ define redelinux::util::config_file(
         },
         path    => $path,
         content => $content,
-        source  => $content ? {
-            undef   => "puppet:///modules/${module_name}/${path}",
-            default => undef,
-        },
+        source  => $source_real,
         replace => $replace,
     }
 }
