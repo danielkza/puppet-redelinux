@@ -6,14 +6,6 @@ define redelinux::util::config_file(
     $mode       = undef,
 )
 {
-    if $content == undef {
-
-    } els
-    } else {
-        $source_real = undef
-    }
-
-
     File {
         ensure  => file,
         owner   => 'root',
