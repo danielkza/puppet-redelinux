@@ -1,6 +1,6 @@
 class redelinux::desktop::apps
 {
-    require redelinux::apt
+    include redelinux::apt
   
     Package {
         ensure => latest

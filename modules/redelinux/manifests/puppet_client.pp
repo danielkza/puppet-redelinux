@@ -1,6 +1,6 @@
 class redelinux::puppet_client
 {
-    require redelinux::apt
+    include redelinux::apt
 
     # Puppet
     package { 'puppet':

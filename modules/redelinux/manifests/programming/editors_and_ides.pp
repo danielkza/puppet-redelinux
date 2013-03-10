@@ -1,7 +1,7 @@
 class redelinux::programming::editors_and_ides
 {   
     include redelinux::params
-    require redelinux::apt
+    include redelinux::apt
 
     Package {
         ensure => latest,
