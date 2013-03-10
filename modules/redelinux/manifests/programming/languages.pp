@@ -1,7 +1,7 @@
 class redelinux::programming::languages
 {
-    include redelinux::apt
     include redelinux::params
+    require redelinux::params
 
     Package {
         ensure => latest,

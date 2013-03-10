@@ -1,6 +1,7 @@
 class redelinux::desktop::mozilla
 {
-    include redelinux::apt
+    include redelinux::params
+    require redelinux::apt
     
     if !$redelinux::params::debian_pre_wheezy {      
         apt::source { 'mozilla':

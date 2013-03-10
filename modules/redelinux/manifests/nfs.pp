@@ -1,7 +1,7 @@
 class redelinux::nfs
 {
-    require redelinux::apt
     include redelinux::params
+    require redelinux::apt
 
     $nfs = 'nfs-common'
 

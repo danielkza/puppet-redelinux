@@ -1,7 +1,7 @@
 class redelinux::programming::editors_and_ides
 {   
-    include redelinux::apt
     include redelinux::params
+    require redelinux::apt
 
     Package {
         ensure => latest,
@@ -16,13 +16,13 @@ class redelinux::programming::editors_and_ides
     package { 'monodevelop': }
     ## BlueJ
     util::deb { 'bluej': 
-        ensure => present
+        ensure => latest,
     }
     ## KDevelop
     package { 'kdevelop': }
     # IntelliJ IDEA
-    util::deb { 'intellij-idea-ic-12.0.4':
-        ensure => present
+    util::deb { 'intellij-idea-ic':
+        ensure => latest,
     }
     ## Netbeans
     package { 'netbeans': }
