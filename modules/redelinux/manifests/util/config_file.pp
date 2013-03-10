@@ -1,6 +1,6 @@
 define redelinux::util::config_file(
     $path       = $title,
-    $content    = undef,
+    $content    = '$undef$',
     $source     = undef,
     $replace    = undef,
     $mode       = undef,
@@ -22,7 +22,8 @@ define redelinux::util::config_file(
     # causes the 'You cannot specify more than one of content, source, target'
     # error.
 
-    if $content != undef {
+    # For some stupid reason, undef == '', work around it as well.
+    if $content != '$undef$' {
         if $source != undef {
             fail("You must specify either content OR source")
         }
