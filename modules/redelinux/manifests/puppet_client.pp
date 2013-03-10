@@ -4,11 +4,11 @@ class redelinux::puppet_client
 
     # Puppet
     package { 'puppet':
-        ensure  => latest,
+        ensure => latest,
     }
 
     service { 'puppet':
-        ensure  => running,
+        ensure => running,
         enable => true,
     }
 
@@ -19,14 +19,15 @@ class redelinux::puppet_client
 
     util::config_file { 'puppet.conf':
         path   => '/etc/puppet/puppet.conf',
+        source => '/etc/puppet/puppet.conf'
     }
     
     util::config_file { 'puppet_default':
-        path   => '/etc/default/puppet',
+        path => '/etc/default/puppet',
     }
     
     util::config_file { 'auth.conf':
-        path   => '/etc/puppet/auth.conf',
+        path => '/etc/puppet/auth.conf',
     }
 
     util::config_file { 'namespaceauth.conf':
