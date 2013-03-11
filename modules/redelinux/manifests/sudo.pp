@@ -1,6 +1,6 @@
 class redelinux::sudo
 {
-    require redelinux::apt
+    include redelinux::apt
     
     # Sudo
     package { 'sudo':

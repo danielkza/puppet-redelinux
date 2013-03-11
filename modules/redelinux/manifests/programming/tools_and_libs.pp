@@ -1,7 +1,7 @@
 class redelinux::programming::tools_and_libs
 {
-    include redelinux::apt
     include redelinux::params
+    include redelinux::apt
 
     Package {
         ensure => latest,

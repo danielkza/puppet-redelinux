@@ -1,36 +1,38 @@
 class redelinux::puppet_client
 {
-    require redelinux::apt
+    include redelinux::params
+    include redelinux::apt
 
     # Puppet
     package { 'puppet':
-        ensure  => latest,
+        ensure => latest,
     }
 
     service { 'puppet':
-        ensure  => running,
-        enable => true,
+        enable  => false,
+        require => Package['puppet']
     }
 
-    # Puppet's config files
-    Util::Config_file {
-        notify => Service['puppet'],
+    $puppet_cron_minute = rand_fqdn($redelinux::params::puppet_client_run_interval)
+
+    cron { 'puppet-agent':
+        ensure  => present,
+        command => $redelinux::params::puppet_client_command
+        user    => 'root',
+        minute  => [$puppet_cron_minute, $puppet_cron_minute + 30],
+        special => 'reboot',
+        require => [Package['puppet'], Service['puppet']]
     }
 
     util::config_file { 'puppet.conf':
         path   => '/etc/puppet/puppet.conf',
+        source => [
+            'files:///modules/${module_name}/etc/puppet/puppet.conf',
+            '/etc/puppet/puppet.conf',
+        ]
     }
     
-    util::config_file { 'puppet_default':
-        path   => '/etc/default/puppet',
-    }
-    
-    util::config_file { 'auth.conf':
-        path   => '/etc/puppet/auth.conf',
-    }
-
-    util::config_file { 'namespaceauth.conf':
-        path    => '/etc/puppet/namespaceauth.conf',
-        content => '',
-    }
+    #util::config_file { 'auth.conf':
+    #    path => '/etc/puppet/auth.conf',
+    #}
 }

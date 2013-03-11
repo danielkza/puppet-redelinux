@@ -1,6 +1,6 @@
 class redelinux::ssh
 {
-    require redelinux::apt
+    include redelinux::apt
 
     class server
     {

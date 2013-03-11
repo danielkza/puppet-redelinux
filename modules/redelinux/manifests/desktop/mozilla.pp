@@ -1,5 +1,6 @@
 class redelinux::desktop::mozilla
 {
+    include redelinux::params
     include redelinux::apt
     
     if !$redelinux::params::debian_pre_wheezy {      

@@ -1,6 +1,6 @@
 class redelinux::kerberos
 {
-    require redelinux::apt
+    include redelinux::apt
     
     # Kerberos
     $kerberos = ["krb5-user", "libpam-krb5"]

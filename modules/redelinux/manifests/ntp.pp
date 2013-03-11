@@ -1,6 +1,6 @@
 class redelinux::ntp
 {
-    require redelinux::apt
+    include redelinux::apt
 
     # NTP
     package { 'ntp':

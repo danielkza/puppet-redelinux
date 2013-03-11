@@ -1,7 +1,11 @@
+# Based on puppet-module-nvidia by pdxcat:
+# https://github.com/pdxcat/puppet-module-nvidia
+# License: Apache 2.0
+
 video_vendors = Hash[
-  "amd" => /(Advanced Micro Devices|ATI Technologies Inc)/i,
+  "amd"    => /(Advanced Micro Devices|ATI Technologies Inc)/i,
   "nvidia" => /NVIDIA/i,
-  "intel" => /Intel Corporation/i
+  "intel"  => /Intel Corporation/i
 ]
 
 command = %q{lspci -mm | sed -n 's/^[0-9:. ]*"VGA compatible controller" //p'}
