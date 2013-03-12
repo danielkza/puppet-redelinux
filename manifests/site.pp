@@ -13,19 +13,10 @@ node base
     include redelinux::nfs
     include redelinux::ssh::server
     #include redelinux::sudo
-    
-    include redelinux::desktop::apps
-    include redelinux::desktop::mozilla
-    include redelinux::desktop::xfce
-    
-    include redelinux::programming
-}
-
-node /^puppet/ inherits base
-{
+    include redelinux::puppet_client
 }
 
 node default inherits base
 {
-    include redelinux::puppet_client
+
 }
