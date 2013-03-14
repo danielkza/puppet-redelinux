@@ -2,39 +2,64 @@
 
 import sys
 import yaml
-import subprocess
+import json
+from subprocess import check_output
+from copy import deepcopy
 
-group_classes = {
-    'servidores': [],
-    'clientes':   ['desktop', 'programming']
-}
+node_configs = json.load(open('./node_config.json'))
+
+default_config = node_configs.pop('default', {
+    'classes': {},
+    'parameters': {}
+})
+
+def dict_merge(target, *args):
+    # Merge multiple dicts
+    if len(args) > 1:
+        for obj in args:
+            dict_merge(target, obj)
+        return target
+
+    # Recursively merge dicts and set non-dict values
+    obj = args[0]
+    if not isinstance(obj, dict):
+        return obj
+    for k, v in obj.iteritems():
+        if k in target and isinstance(target[k], dict):
+            dict_merge(target[k], v)
+        else:
+            target[k] = deepcopy(v)
+
+    return target
 
 def puppet_enc_classify(node_fqdn):
-    # A client must match one of those classes. An empty class list means
-    # no extra puppet-classes, while not being present will trigger an error
-
-    # Common classes are defined in site.pp
-    node_name, node_domain = node_fqdn.split('.', 1)
+    try:
+        node_name, node_domain = node_fqdn.split('.', 1)
+    except ValueError:
+        node_name = node_fqdn
+        node_domain = None
 
     if not node_name or (node_domain and node_domain != 'linux.ime.usp.br'):
         return None
 
-    node_groups_str = subprocess.check_output('/megazord machines --machine-groups ' + none_name)
-    node_groups = node_groups_str.split(',') or []
+    node_groups_str = check_output(['./megazord', 'machines', '--machine-groups',
+                                    node_name])
+    node_groups = set(node_groups_str.strip().split(','))
+    
+    # intersect node's groups with available config. groups
+    node_groups.intersection_update(node_configs.keys())
 
-    node_groups.intersection_update(group_classes.keys())
-    if not node_groups:
-        return None
+    result = default_config
+    if node_groups:
+        result = dict_merge(result, *(node_configs[group] for group in node_groups))
 
-    node_classes = set()
-    for group in node_groups:
-        node_classes.update(group_classes[group])
+    classes = result['classes']
+    for k, v in classes.items():
+        if not k.startswith('::') and not k.startswith('redelinux::'):
+            classes['redelinux::' + k] = v
+            del classes[k]
 
-    result = {
-        'classes': ['redelinux::' + klass for klass in node_classes]
-    }
-
-    return yaml.dump(result, explicit_start=True, default_flow_style=False)
+    return yaml.safe_dump(result, explicit_start=True, default_flow_style=False)
 
 if __name__ == '__main__':
     if len(sys.argv) < 2:
@@ -46,4 +71,3 @@ if __name__ == '__main__':
         print result
     else:
         sys.exit(1)
-
