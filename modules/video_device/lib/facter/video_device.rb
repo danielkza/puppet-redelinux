@@ -9,7 +9,7 @@ video_vendors = Hash[
 ]
 
 command = %q{lspci -mm | sed -n 's/^[0-9:. ]*"VGA compatible controller" //p'}
-lspci_out = Facter::Util::Resolution.exec(command)
+lspci_out = (Facter::Util::Resolution.exec(command) or '')
     
 vendor_devices = Hash.new{|hash, key| hash[key] = []}
 lspci_out.each_line do |line|

@@ -57,7 +57,7 @@ ChallengeResponseAuthentication no
 #KerberosTicketCleanup yes
 
 # GSSAPI options
-GSSAPIAuthentication no
+GSSAPIAuthentication yes
 GSSAPICleanupCredentials yes
 
 X11Forwarding yes
