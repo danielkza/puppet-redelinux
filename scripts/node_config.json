@@ -1,0 +1,20 @@
+{
+
+"default": {
+  "classes": {
+     "ntp": {}
+  }
+},
+"clientes": {
+  "classes": {
+    "desktop": {},
+    "programming": {}
+  },
+  "parameters": {
+    "redelinux_is_client": true
+  }
+}
+
+}
+
+
