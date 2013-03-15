@@ -1,20 +1,33 @@
 {
 
-"default": {
-  "classes": {
-     "ntp": {}
-  }
+"default":
+{
+    "classes":
+    {
+        "network": {
+            "stage": "pre-deploy"
+        },
+        "apt": {},
+        "ntp": {},
+        "kerberos": {},
+        "ldap": {},
+        "nfs": {},
+        "ssh::server": {},
+        "puppet_client": {}
+    }
 },
-"clientes": {
-  "classes": {
-    "desktop": {},
-    "programming": {}
-  },
-  "parameters": {
-    "redelinux_is_client": true
-  }
+"clientes":
+{
+    "classes":
+    {
+        "desktop": {},
+        "programming": {},
+        "ssh::client": {}
+    },
+    "parameters":
+    {
+        "redelinux_is_client": true
+    }
 }
 
 }
-
-

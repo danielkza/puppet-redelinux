@@ -50,11 +50,11 @@ def puppet_enc_classify(node_fqdn):
     node_groups.intersection_update(node_configs.keys())
 
     result = default_config
-    if node_groups:
-        result = dict_merge(result, *(node_configs[group] for group in node_groups))
+    for group in node_groups:
+        dict_merge(result, node_configs[group])
 
     classes = result['classes']
-    for k, v in classes.items():
+    for k, v in classes.iteritems():
         if not k.startswith('::') and not k.startswith('redelinux::'):
             classes['redelinux::' + k] = v
             del classes[k]
