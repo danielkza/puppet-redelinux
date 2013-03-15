@@ -26,6 +26,23 @@ def dict_merge(target, *args):
 
     return target
 
+def parse_fqdn(node_fqdn, node_configs):
+    try:
+        node_name, node_domain = node_fqdn.split('.', 1)
+    except ValueError:
+        node_name = node_fqdn
+        node_domain = None
+
+    if not node_name or (node_domain and node_domain != 'linux.ime.usp.br'):
+        return None, None
+
+    try:
+        node_name = node_configs['aliases'][node_name]
+    except KeyError:
+        pass
+    
+    return node_name, node_domain
+
 def merge_config(config, config_dict, keys):
     if config_dict is None:
         return config
@@ -50,22 +67,15 @@ def qualify_classes(classes):
     return classes
 
 def classify_node(node_fqdn, node_configs):
-    try:
-        node_name, node_domain = node_fqdn.split('.', 1)
-    except ValueError:
-        node_name = node_fqdn
-        node_domain = None
-
-    if not node_name or (node_domain and node_domain != 'linux.ime.usp.br'):
+    node_name, node_domain = parse_fqdn(node_fqdn, node_configs)
+    if node_name is None:
         return None
 
     try:
         node_config = node_configs['hosts'][node_name]
-        node_name = node_config.pop('hostname', node_name)
     except KeyError:
         node_config = None
-        pass
-
+    
     node_groups_str = check_output([os.path.join(script_dir, 'megazord'),
                                     'machines', '--machine-groups', node_name])
     node_groups = set(node_groups_str.strip().split(','))
@@ -104,3 +114,4 @@ if __name__ == '__main__':
         print result
     else:
         sys.exit(1)
+

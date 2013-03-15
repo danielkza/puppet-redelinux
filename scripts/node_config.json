@@ -1,5 +1,9 @@
 {
 
+"aliases":
+{
+    "puppet": "bison"
+},
 "default":
 {
     "classes":
@@ -31,9 +35,8 @@
 },
 "hosts":
 {
-    "puppet":
+    "bison":
     {
-        "hostname": "bison",
         "classes":
         {
             "nagios::server": {}
