@@ -13,21 +13,33 @@
         "ldap": {},
         "nfs": {},
         "ssh::server": {},
-        "puppet_client": {}
+        "puppet_client": {},
+        "nagios::host": {}
     }
 },
-"clientes":
+"groups":
 {
-    "classes":
+    "clientes":
     {
-        "desktop": {},
-        "programming": {},
-        "ssh::client": {}
-    },
-    "parameters":
+        "classes":
+        {
+            "desktop": {},
+            "programming": {},
+            "ssh::client": {}
+        }
+    }
+},
+"hosts":
+{
+    "puppet":
     {
-        "redelinux_is_client": true
+        "hostname": "bison",
+        "classes":
+        {
+            "nagios::server": {}
+        }
     }
 }
 
 }
+

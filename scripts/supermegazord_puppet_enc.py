@@ -7,16 +7,6 @@ import os.path
 from subprocess import check_output
 from copy import deepcopy
 
-script_dir = os.path.dirname(os.path.realpath(__file__))
-
-with open(os.path.join(script_dir, 'node_config.json')) as fp:
-    node_configs = json.load(fp)
-
-default_config = node_configs.pop('default', {
-    'classes': {},
-    'parameters': {}
-})
-
 def dict_merge(target, *args):
     # Merge multiple dicts
     if len(args) > 1:
@@ -36,7 +26,30 @@ def dict_merge(target, *args):
 
     return target
 
-def puppet_enc_classify(node_fqdn):
+def merge_config(config, config_dict, keys):
+    if config_dict is None:
+        return config
+
+    if not isinstance(keys, str):
+        keys = set(keys)
+        keys.intersection_update(config_dict.iterkeys())
+
+        for key in keys:
+            config = merge_config(config, config_dict, key)
+
+        return config
+
+    return dict_merge(config, config_dict[key])
+
+def qualify_classes(classes):
+    for k, v in classes.iteritems():
+        if not k.startswith('::') and not k.startswith('redelinux::'):
+            classes['redelinux::' + k] = v
+            del classes[k]
+
+    return classes
+
+def classify_node(node_fqdn, node_configs):
     try:
         node_name, node_domain = node_fqdn.split('.', 1)
     except ValueError:
@@ -46,31 +59,47 @@ def puppet_enc_classify(node_fqdn):
     if not node_name or (node_domain and node_domain != 'linux.ime.usp.br'):
         return None
 
+    try:
+        node_config = node_configs['hosts'][node_name]
+        node_name = node_config.pop('hostname', node_name)
+    except KeyError:
+        node_config = None
+        pass
+
     node_groups_str = check_output([os.path.join(script_dir, 'megazord'),
                                     'machines', '--machine-groups', node_name])
     node_groups = set(node_groups_str.strip().split(','))
-    
-    # intersect node's groups with available config. groups
-    node_groups.intersection_update(node_configs.keys())
 
-    result = default_config
-    for group in node_groups:
-        dict_merge(result, node_configs[group])
+    result = {
+        'classes': {},
+        'parameters': {}
+    }
 
-    classes = result['classes']
-    for k, v in classes.iteritems():
-        if not k.startswith('::') and not k.startswith('redelinux::'):
-            classes['redelinux::' + k] = v
-            del classes[k]
+    result = dict_merge(result, node_configs.get('default', {}))
+    result = merge_config(result, node_configs.get('groups', None), node_groups)
+    if node_config:
+        result = dict_merge(result, node_config)
+
+    result['classes'] = qualify_classes(result['classes'])
+    result['parameters'].update({
+        'redelinux_host_groups': list(node_groups)
+    })
 
     return yaml.safe_dump(result, explicit_start=True, default_flow_style=False)
+
+##
+
+script_dir = os.path.dirname(os.path.realpath(__file__))
+
+with open(os.path.join(script_dir, 'node_config.json')) as fp:
+    node_configs = json.load(fp)
 
 if __name__ == '__main__':
     if len(sys.argv) < 2:
         sys.exit(1)
 
     node_fqdn = sys.argv[1]
-    result = puppet_enc_classify(node_fqdn)
+    result = classify_node(node_fqdn, node_configs)
     if result is not None:
         print result
     else:

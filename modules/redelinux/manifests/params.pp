@@ -9,4 +9,10 @@ class redelinux::params
 
     $puppet_client_command = '/usr/bin/puppet agent --onetime --no-daemonize'
     $puppet_client_hourly_runs = 2
+
+    if defined($::redelinux_host_groups) {
+        $host_groups = $::redelinux_host_groups
+    } else {
+        $host_groups = []
+    }
 }
