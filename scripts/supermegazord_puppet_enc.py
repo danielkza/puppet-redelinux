@@ -3,10 +3,13 @@
 import sys
 import yaml
 import json
+import os.path
 from subprocess import check_output
 from copy import deepcopy
 
-node_configs = json.load(open('./node_config.json'))
+script_dir = os.path.dirname(os.path.realpath(__file__))
+
+node_configs = json.load(open(os.path.join(script_dir, 'node_config.json'))
 
 default_config = node_configs.pop('default', {
     'classes': {},
