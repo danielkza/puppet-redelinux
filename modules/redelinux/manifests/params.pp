@@ -7,7 +7,6 @@ class redelinux::params
     $kerberos_admin_group = 'olimpo'
     $kerberos_realm = 'LINUX.IME.USP.BR'
 
-    $puppet_client_command = ['/usr/bin/puppet agent', '--onetime',
-                              '--no-daemonize']
+    $puppet_client_command = '/usr/bin/puppet agent --onetime --no-daemonize'
     $puppet_client_hourly_runs = 2
 }
