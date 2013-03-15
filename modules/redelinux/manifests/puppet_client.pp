@@ -13,13 +13,13 @@ class redelinux::puppet_client
         require => Package['puppet']
     }
 
-    $puppet_cron_minute = fqdn_rand($redelinux::params::puppet_client_run_interval)
+    $minutes = interval($redelinux::params::puppet_client_hourly_runs, 60)
 
     cron { 'puppet-agent':
         ensure  => present,
         command => $redelinux::params::puppet_client_command,
         user    => 'root',
-        minute  => [$puppet_cron_minute, $puppet_cron_minute + 30],
+        minute  => $minutes,
         special => 'reboot',
         require => [Package['puppet'], Service['puppet']]
     }
