@@ -2,14 +2,15 @@ class redelinux::nagios
 {
     class server
     {
-        package { ['nagios', 'nagios-plugins']:
+        $nagios_server = ['nagios3', 'nagios-plugins']
+        package { $nagios_server:
             ensure => latest,
         }
 
-        service { 'nagios':
+        service { 'nagios3':
             ensure  => running,
             enable  => true,
-            require => Package['nagios'],
+            require => Package[$nagios_server],
         }
 
         Nagios_host<<||>>
