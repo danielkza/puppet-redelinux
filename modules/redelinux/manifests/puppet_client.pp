@@ -27,7 +27,7 @@ class redelinux::puppet_client
     util::config_file { 'puppet.conf':
         path   => '/etc/puppet/puppet.conf',
         source => [
-            'files:///modules/${module_name}/etc/puppet/puppet.conf',
+            'puppet:///modules/${module_name}/etc/puppet/puppet.conf',
             '/etc/puppet/puppet.conf',
         ]
     }
