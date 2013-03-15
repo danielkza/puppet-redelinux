@@ -20,7 +20,6 @@ class redelinux::puppet_client
         command => $redelinux::params::puppet_client_command,
         user    => 'root',
         minute  => $minutes,
-        special => 'reboot',
         require => [Package['puppet'], Service['puppet']]
     }
 
