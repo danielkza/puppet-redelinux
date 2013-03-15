@@ -46,8 +46,8 @@ def puppet_enc_classify(node_fqdn):
     if not node_name or (node_domain and node_domain != 'linux.ime.usp.br'):
         return None
 
-    node_groups_str = check_output(['./megazord', 'machines', '--machine-groups',
-                                    node_name])
+    node_groups_str = check_output([os.path.join(script_dir, 'megazord'),
+                                    'machines', '--machine-groups', node_name])
     node_groups = set(node_groups_str.strip().split(','))
     
     # intersect node's groups with available config. groups
