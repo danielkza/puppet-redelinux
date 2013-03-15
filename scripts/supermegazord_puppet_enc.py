@@ -9,7 +9,8 @@ from copy import deepcopy
 
 script_dir = os.path.dirname(os.path.realpath(__file__))
 
-node_configs = json.load(open(os.path.join(script_dir, 'node_config.json'))
+with open(os.path.join(script_dir, 'node_config.json')) as fp:
+    node_configs = json.load(fp)
 
 default_config = node_configs.pop('default', {
     'classes': {},
