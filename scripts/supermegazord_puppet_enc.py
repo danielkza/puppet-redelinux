@@ -59,12 +59,16 @@ def merge_config(config, config_dict, keys):
     return dict_merge(config, config_dict[key])
 
 def qualify_classes(classes):
+    qual_classes = {}
     for k, v in classes.iteritems():
-        if not k.startswith('::') and not k.startswith('redelinux::'):
-            classes['redelinux::' + k] = v
-            del classes[k]
+        if k.startswith('::'):
+            k = k[2:]
+        elif not k.startswith('redelinux::'):
+            k = 'redelinux::' + k
 
-    return classes
+        qual_classes[k] = v
+
+    return qual_classes
 
 def classify_node(node_fqdn, node_configs):
     node_name, node_domain = parse_fqdn(node_fqdn, node_configs)

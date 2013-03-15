@@ -39,7 +39,12 @@
     {
         "classes":
         {
-            "nagios::server": {}
+            "nagios::server": {},
+            "::puppetdb": {},
+            "::puppetdb::master::config":
+            {
+                "restart_puppet": false
+            }
         }
     }
 }
