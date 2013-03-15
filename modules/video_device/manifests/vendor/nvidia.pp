@@ -6,7 +6,7 @@ class video_device::vendor::nvidia
     Exec {
         path => ['/bin/', '/sbin/',
                  '/usr/bin/', '/usr/sbin/',
-                 '/usr/local/bin/', '/usr/local/sbin'
+                 '/usr/local/bin/', '/usr/local/sbin']
         ]
     }
 
@@ -38,8 +38,8 @@ class video_device::vendor::nvidia
         video_device::driver { 'video_device_nvidia_nouveau':
             driver => $lsbdistid ? {
                 Debian         => ['xserver-xorg-video-nouveau'],
-                /Ubuntu|Mint/ => ['xserver-xorg-video-nouveau', 'nouveau-firmware'],
-                default       => fail("Unknown operating system")
+                /Ubuntu|Mint/  => ['xserver-xorg-video-nouveau', 'nouveau-firmware'],
+                default        => fail("Unknown operating system")
             },
             type   => 'free',
             ensure => $ensure
