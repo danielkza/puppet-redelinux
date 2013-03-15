@@ -11,6 +11,7 @@ class redelinux::apt(
     class { '::apt': 
         purge_sources_list   => true,
         purge_sources_list_d => true,
+        purge_preferences_d  => true,
     }
 
     if $redelinux::params::debian_pre_wheezy
@@ -26,7 +27,10 @@ class redelinux::apt(
             repos             => 'main contrib non-free',
             include_src       => true,
             required_packages => 'debian-keyring debian-archive-keyring',
-            pin               => '-10',
+        }
+
+        ::apt::pin { 'wheezy':
+            priority => -10
         }
 
         # Stupid anchor
