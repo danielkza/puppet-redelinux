@@ -1,0 +1,9 @@
+define hostgroup
+{
+    hostgroup_name    <%= @hostgroup_name %>
+    alias             <%= @alias %>
+<% if @hostgroup_members %>
+    hostgroup_members <%= @hostgroup_members.join(',') %>
+<% end %>
+}
+

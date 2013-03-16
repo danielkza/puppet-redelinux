@@ -22,6 +22,17 @@ class redelinux::nagios(
             require => Package['nagios'],
         }
 
+        util::config_file { 'nagios_redelinux-host':
+            path    => '/etc/nagios3/conf.d/redelinux-host.cfg',
+            before  => File['nagios_config_dir'],
+        }
+
+        file { 'nagios_default_groups':
+            path    => '/etc/nagios/conf.d/hostgroups_nagios2.cfg',
+            ensure  => absent,
+            before  => File['nagios_config_dir'],
+        }
+
         file { 'nagios_conf_dir':
             path    => $nagios_conf_dir,
             ensure  => directory,
@@ -29,11 +40,13 @@ class redelinux::nagios(
             group   => 'root',
             mode    => '0644',
             recurse => true,
+            require => Package[$nagios_package],
             notify  => Service[$nagios_service],
         }
 
         Redelinux::Nagios::Host::Host_group<<||>>
-        -> Nagios_host<<||>>
+        -> Util::Config_file['nagios_redelinux-host']
+        -> Redelinux::Nagios::Host::Host_entry<<||>> 
         -> File['nagios_conf_dir']
         ~> Service['nagios']
     }
@@ -41,26 +54,41 @@ class redelinux::nagios(
     class host inherits redelinux::nagios
     {
         define host_group(
-            $group_name = $title,
-            $target     = undef
+            $hostgroup_name    = $title,
+            $ensure            = present,
+            $alias             = $hostgroup_name,
+            $hostgroup_members = undef,
         ) {
-            if $group_name != 'all' and !defined(Nagios_hostgroup[$group_name]) { 
-                nagios_hostgroup { $group_name:
-                    ensure         => present,
-                    hostgroup_name => $group_name,
-                    target         => $target,
-                }
+            util::config_file { "nagios_group_${hostgroup_name{}"
+                ensure  => $ensure,
+                path    => "${nagios_conf_dir}/group-${hostgroup_name}.cfg",
+                content => template("redelinux/nagios_hostgroup.erb"),
             }
         }
 
-        @@host_group { $redelinux::params::host_groups: }
+        define host_entry(
+            $host_name    = $title,
+            $ensure       = present,
+            $alias        = $title,
+            $address      = $host_name,
+            $parents      = undef,
+            $hostgroups   = undef,
+            $use          = undef,
+            $check_period = undef,
+        ) 
+            util::config_file { "nagios_host_${host_name}":
 
-        @@nagios_host { $::fqdn:
-            ensure     => present,
-            use        => 'generic-host',
-            alias      => $::hostname,
-            hostgroups => join($redelinux::params::host_groups, ','),
-            require    => Host_group[$redelinux::params::host_groups]
+                ensure  => $ensure,
+                path    => "${nagios_conf_dir}/host-${host_name}.cfg":
+                content => template("redelinux/nagios_host.erb"),
+            }
         }
-    }
+
+        @@host_entry { $::fqdn:
+            ensure => present,
+            alias  => $::hostname,
+            use    => 'redelinux-host'
+        }
+        
+        @@host_group { $redelinux::params::host_groups: }
 }
