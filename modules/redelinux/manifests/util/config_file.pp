@@ -49,8 +49,6 @@ define redelinux::util::config_file(
         file { $title: 
             content => $content,
         }
-    } elsif $source == undef {
-        fail("You must specify one of: content, source")
     } else {
         $sources = concat([$::fqdn, $::hostname], $redelinux::params::host_groups)
         $sources = prefix("puppet:///modules/${caller_module_name}/${path}-", $sources)
