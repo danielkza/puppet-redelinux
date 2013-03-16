@@ -50,9 +50,9 @@ define redelinux::util::config_file(
             content => $content,
         }
     } else {
-        $sources = concat([$::fqdn, $::hostname], $redelinux::params::host_groups)
+        $sources = flatten($::fqdn, $::hostname, sort($redelinux::params::host_groups))
         $sources = prefix("puppet:///modules/${caller_module_name}/${path}-", $sources)
-        $sources = concat($sources, ["puppet:///modules/${caller_module_name}/${path}"])
+        $sources = flatten([$sources, "puppet:///modules/${caller_module_name}/${path}"])
 
         if $extra_sources != '$undef$' {
             if !is_array($extra_sources) {
