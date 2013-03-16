@@ -53,6 +53,13 @@ class redelinux::apt(
         include_src       => true,
     }
 
+    ::apt::source { 'redelinux':
+        location   => 'http://apt.linux.ime.usp.br',
+        repos      => 'main contrib non-free',
+        key        => '1F48EB41',
+        key_server => 'subkeys.pgp.net',
+    }
+
     ::apt::source { 'puppetlabs':
         location          => 'http://apt.puppetlabs.com',
         repos             => 'main',

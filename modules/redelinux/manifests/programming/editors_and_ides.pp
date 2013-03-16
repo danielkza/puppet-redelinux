@@ -15,15 +15,11 @@ class redelinux::programming::editors_and_ides
     ## Monodevelop
     package { 'monodevelop': }
     ## BlueJ
-    util::deb { 'bluej': 
-        ensure => latest,
-    }
+    package { 'bluej': }
     ## KDevelop
     package { 'kdevelop': }
-    # IntelliJ IDEA
-    util::deb { 'intellij-idea-ic':
-        ensure => latest,
-    }
+    ## IntelliJ IDEA
+    package { 'intellij-idea-ic': }
     ## Netbeans
     package { 'netbeans': }
 

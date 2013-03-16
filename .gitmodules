@@ -1,3 +1,9 @@
 [submodule "modules/video_device"]
 	path = modules/video_device
 	url = git@github.com:danielkza/puppet-video_device
+[submodule "modules/nagios"]
+	path = modules/nagios
+	url = git://git.puppet.immerda.ch/module-nagios.git
+[submodule "modules/apache"]
+	path = modules/apache
+	url = git://git.puppet.immerda.ch/module-apache.git
