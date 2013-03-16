@@ -29,7 +29,7 @@ define redelinux::util::config_file(
         owner   => 'root',
         group   => 'root',
         mode    => $mode ? {
-            undef   => 'a=r,u+w',
+            undef   => '0644',
             default => $mode,
         },
         path    => $path,
