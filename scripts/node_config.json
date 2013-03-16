@@ -16,8 +16,9 @@
         "kerberos": {},
         "ldap": {},
         "nfs": {},
-        "ssh::server": {},
         "puppet_client": {},
+        "ssh::server": {},
+        "ssh::client": {},
         "nagios::host": {}
     }
 },
@@ -28,8 +29,7 @@
         "classes":
         {
             "desktop": {},
-            "programming": {},
-            "ssh::client": {}
+            "programming": {}
         }
     }
 },
@@ -40,7 +40,10 @@
         "classes":
         {
             "nagios::server": {},
-            "::puppetdb": {},
+            "::puppetdb":
+            {
+                "puppetdb_server": "puppet.linux.ime.usp.br"
+            },
             "::puppetdb::master::config":
             {
                 "restart_puppet": false
