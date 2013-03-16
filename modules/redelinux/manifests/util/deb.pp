@@ -1,40 +1,19 @@
-define redelinux::util::deb::create_file_dir(
-    $path  = $title,
-    $owner = undef,
-    $group = undef,
-    $mode  = undef
-) {
-    validate_absolute_path($path)
-    
-    $path_parent = regsubst($path, '/[^/]*$', '')
-    if $path_parent != "" and !defined(File[$path_parent]) {
-        file { $path_parent: 
-            ensure => directory,
-            owner  => $owner,
-            group  => $group,
-            mode   => $mode,
-        }
-        
-        redelinux::util::deb::create_file_dir { $path_parent:
-            owner => $owner,
-            group => $group,
-            mode  => $mode,
-        }
-	}
-}
 
 define redelinux::util::deb(
     $source = "puppet:///modules/${module_name}/packages/${name}.deb",
     $path   = undef,
     $ensure = present
 ) {
+    include redelinux::params
+    include redelinux::util::mkdir
+
     if $path == undef {
         $path_real = "/var/${module_name}-packages/${name}.deb"
     } else {
         $path_real = $path
     }
     
-    ensure_resource('redelinux::util::deb::create_file_dir', $path_real)
+    ensure_resource('redelinux::util::mkdir', $path_real)
 
     file { "deb::${title}":
         ensure  => file,
