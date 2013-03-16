@@ -7,10 +7,16 @@ class redelinux::ssh
         package { 'openssh-server':
             ensure => present,
         }
+        
+        service { 'ssh':
+            ensure  => running,
+            enable  => true,
+        }
 
         util::config_file { 'ssh_server_config':
             path    => '/etc/ssh/sshd_config',
-            require => Package['openssh-server']
+            require => Package['openssh-server'],
+            notify  => Service['ssh'],
         }
    }
 

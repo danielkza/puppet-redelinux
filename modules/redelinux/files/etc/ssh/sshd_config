@@ -59,6 +59,7 @@ ChallengeResponseAuthentication no
 # GSSAPI options
 GSSAPIAuthentication yes
 GSSAPICleanupCredentials yes
+GSSAPIStrictAcceptorCheck no
 
 X11Forwarding yes
 X11DisplayOffset 10
@@ -85,3 +86,5 @@ Subsystem sftp /usr/lib/openssh/sftp-server
 # PAM authentication, then enable this but set PasswordAuthentication
 # and ChallengeResponseAuthentication to 'no'.
 UsePAM yes
+
+DenyGroups exaluno
