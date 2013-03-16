@@ -94,14 +94,14 @@ def classify_node(node_fqdn, node_configs):
     if node_config:
         result = dict_merge(result, node_config)
 
-    result['classes'] = qualify_classes(result['classes'])
-    result['parameters'].update({
-        'redelinux_host_groups': list(node_groups)
+    result['classes'] = dict_merge(qualify_classes(result['classes']), {
+        'redelinux::params': {
+            'host_groups': list(node_groups)
+        }
     })
 
     return yaml.safe_dump(result, explicit_start=True, default_flow_style=False)
 
-##
 
 script_dir = os.path.dirname(os.path.realpath(__file__))
 

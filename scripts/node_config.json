@@ -40,13 +40,11 @@
         "classes":
         {
             "nagios::server": {},
-            "::puppetdb":
-            {
-                "puppetdb_server": "puppet.linux.ime.usp.br"
-            },
+            "::puppetdb": {},
             "::puppetdb::master::config":
             {
-                "restart_puppet": false
+                "restart_puppet":  false,
+                "puppetdb_server": "puppet.linux.ime.usp.br"
             }
         }
     }
