@@ -1,15 +1,16 @@
-define host
-{
+define host {
     host_name    <%= @host_name %>
-    alias        <%= @alias %>
-    address      <%= @address %>
+    alias        <%= @host_alias %>
+    address      <%= @address_real %>
 <% if @parents %>
     parents      <%= @parents.join(',') %>
 <% end %>
 <% if @hostgroups %>
     hostgroups   <%= @hostgroups.join(',') %>
+<% end %>
 <% if @use %>
     use          <%= @use %>
+<% end %>
 <% if @check_period %>
     check_period <%= @check_period %>
 <% end %>
