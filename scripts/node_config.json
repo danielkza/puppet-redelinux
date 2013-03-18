@@ -19,6 +19,10 @@
         "puppet_client": {},
         "ssh::server": {},
         "ssh::client": {},
+        "icinga": {},
+        "nagios": {
+            "use_provider": "icinga"
+        },
         "nagios::host": {}
     }
 },
@@ -39,7 +43,7 @@
     {
         "classes":
         {
-            "nagios::server": {},
+            "icinga": {},
             "::puppetdb": {},
             "::puppetdb::master::config":
             {
