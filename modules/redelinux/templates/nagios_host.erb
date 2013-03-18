@@ -2,16 +2,16 @@ define host {
     host_name    <%= @host_name %>
     alias        <%= @host_alias %>
     address      <%= @address_real %>
-<% if @parents && !@parents.empty? %>
+<% if @parents && !@parents.empty? -%>
     parents      <%= @parents.join(',') %>
-<% end %>
-<% if @hostgroups && !@hostgroups.empty? %>
+<% end -%>
+<% if @hostgroups && !@hostgroups.empty? -%>
     hostgroups   <%= @hostgroups.join(',') %>
-<% end %>
-<% if @use %>
+<% end -%>
+<% if @use -%>
     use          <%= @use %>
-<% end %>
-<% if @check_period %>
+<% end -%>
+<% if @check_period -%>
     check_period <%= @check_period %>
-<% end %>
+<% end -%>
 }

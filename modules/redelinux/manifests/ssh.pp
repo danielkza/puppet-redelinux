@@ -4,31 +4,34 @@ class redelinux::ssh
 
     class server
     {
-        package { 'openssh-server':
+        package { 'ssh-server':
+            name   => 'openssh-server',
             ensure => present,
         }
         
-        service { 'ssh':
+        service { 'ssh-server':
+            name    => 'ssh',
             ensure  => running,
             enable  => true,
+            require => Package['ssh-server'],
         }
 
-        util::config_file { 'ssh_server_config':
-            path    => '/etc/ssh/sshd_config',
-            require => Package['openssh-server'],
-            notify  => Service['ssh'],
+        util::config_concat { 'sshd_config':
+            path   => '/etc/ssh/sshd_config',
+            notify => Service['ssh-server'],
         }
-   }
+    }
 
     class client
     {
-        package { 'openssh-client':
+        package { 'ssh-client':
+            name   => 'openssh-client',
             ensure => present,
         }
 
-        util::config_file { 'ssh_client_config':
+        util::config_concat { 'ssh_config':
             path    => '/etc/ssh/ssh_config',
-            require => Package['openssh-client']
+            require => Package['ssh-client'],
         }
     }
 }
