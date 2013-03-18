@@ -1,0 +1,3 @@
+class redelinux::nagios::provider
+{
+}

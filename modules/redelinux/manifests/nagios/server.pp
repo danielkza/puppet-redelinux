@@ -19,20 +19,35 @@ inherits redelinux::nagios::params
 
     Util::Config_file {
         require => Package[$package, $plugins],
-        notify =>> Service[$service],
+        notify  => Service[$service],
+    }
+    
+    util::config_file { 'nagios_default':
+        path    => "/etc/default/${service}",
+        ensure  => file,
     }
 
-    util:config_file { 'nagios_object_dir':
-        path    => "${conf_dir}/${object_subdir}/",
+    util::config_file { 'nagios_conf_dir':
+        path    => "${conf_dir}",
         ensure  => directory,
-        recurse => remote,
+        recurse => true,
     }
 
     util::config_file { 'nagios_default_groups':
-        path    => "${conf_dir}/${object_subdir}/hostgroups_${default_cfg_suffix}.cfg",
+        path    => "${object_dir}/hostgroups_${default_cfg_suffix}.cfg",
         ensure  => absent,
     }
 
-    Host_group<<||>>
-    Host_entry<<||>>
+    util::config_file { 'nagios_default_services':
+        path    => "${object_dir}/services_${default_cfg_suffix}.cfg",
+        ensure  => absent,
+    }
+    
+    util::config_file { 'nagios_default_extinfo':
+        path    => "${object_dir}/extinfo_${default_cfg_suffix}.cfg",
+        ensure  => absent,
+    }
+
+    Host_group<<||>> ~> Service[$service]
+    Host_entry<<||>> ~> Service[$service]
 }

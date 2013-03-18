@@ -12,6 +12,11 @@ define redelinux::nagios::host_entry(
 
     $resource_name = "nagios_host_${host_name}"
     if !defined(Util::Config_file[$resource_name]) {
+        $address_real = $address ? {
+            undef   => $host_name,
+            default => $address,
+        }
+
         util::config_file { $resource_name:
             ensure  => $ensure,
             path    => "${redelinux::nagios::params::object_dir}/host-${host_name}.cfg",

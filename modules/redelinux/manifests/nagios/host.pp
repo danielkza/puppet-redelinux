@@ -1,6 +1,6 @@
 class redelinux::nagios::host(
     $use         = 'generic-host',
-    $host_groups = [],
+    $host_groups = $redelinux::params::host_groups,
 )
 {
     @@host_entry { $::fqdn:

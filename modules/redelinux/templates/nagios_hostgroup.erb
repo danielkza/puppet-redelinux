@@ -1,7 +1,7 @@
 define hostgroup {
     hostgroup_name    <%= @hostgroup_name %>
     alias             <%= @hostgroup_alias %>
-<% if @hostgroup_members %>
+<% if @hostgroup_members && !@hostgroup_members.empty? %>
     hostgroup_members <%= @hostgroup_members.join(',') %>
 <% end %>
 }
