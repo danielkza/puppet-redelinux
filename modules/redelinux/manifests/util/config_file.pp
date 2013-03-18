@@ -60,7 +60,7 @@ define redelinux::util::config_file(
 	    }
 	} else {
 	    $selectors = flatten([$::fqdn, $::hostname, sort($redelinux::params::host_groups)])
-	    $selector_sources = prefix($selectors, "puppet:///modules/${caller_module_name}/${path}-")
+	    $selector_sources = prefix($selectors, "puppet:///modules/${caller_module_name}/${path}$$")
 	     
 	    if $extra_sources != '$undef$' {
 		# we have two cases: extra_sources is either an array or a string
@@ -70,9 +70,10 @@ define redelinux::util::config_file(
 	    } else {
 		$extra_sources_real = []
 	    }
-
+            
+            $path_clean = regsubst($path, '/+$', '')
 	    $sources = flatten([$selector_sources,
-				"puppet:///modules/${caller_module_name}/${path}",
+				"puppet:///modules/${caller_module_name}/${path_clean}",
 				$extra_sources_real])
 
 	    file { $title:
