@@ -1,7 +1,6 @@
 class redelinux::kerberos
 {
     include redelinux::params
-    include redelinux::apt
     
     # Kerberos
     $kerberos = ["krb5-user", "libpam-krb5"]
@@ -21,10 +20,12 @@ class redelinux::kerberos
     $users_line = chomp(generate('/usr/bin/getent', 'group', $group))
     $users_list = regsubst($users_line, '^.+:', '')
     $principals = suffix(split($users_list, ','), "/admin@${realm}")
-    
-    k5login { 'redelinux':
-        ensure     => present,
-        path       => '/root/.k5login',
-        principals => $principals
-    }    
+
+    if !empty($principals) {  
+        k5login { 'redelinux':
+            ensure     => present,
+            path       => '/root/.k5login',
+            principals => $principals
+        }
+    }
 }    

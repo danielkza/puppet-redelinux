@@ -1,9 +1,7 @@
 class redelinux::ldap
 {
-    include redelinux::apt
-
     # LDAP
-    $ldap = ['libnss-ldapd', 'libsasl2-modules-gssapi-mit', 'kstart']
+    $ldap = ['libnss-ldapd', 'kstart']
 
     package { $ldap:
         ensure => present,
@@ -35,9 +33,8 @@ class redelinux::ldap
     }
 
     include redelinux::nsswitch
-    Package[$ldap] -> Class['nsswitch']
 
     anchor { 'redelinux::ldap::begin': }
-    -> Class['nsswitch']
+    -> Class['redelinux::nsswitch']
     -> anchor { 'redelinux::ldap::end': }
 }

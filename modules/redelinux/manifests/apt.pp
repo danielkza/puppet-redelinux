@@ -8,7 +8,7 @@ class redelinux::apt(
         default => $mirror
     }
 
-    class { '::apt': 
+    class { '::apt':
         purge_sources_list   => true,
         purge_sources_list_d => true,
         purge_preferences_d  => true,
@@ -68,7 +68,7 @@ class redelinux::apt(
         key_server        => 'subkeys.pgp.net'
     }
     
-    Class['::apt::Update'] -> Package<| |> 
+    Class['::Apt::Update'] -> Package<| |> 
 
     anchor { 'redelinux::apt::begin': }
     -> Class['::apt']

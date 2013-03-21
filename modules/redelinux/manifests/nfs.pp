@@ -1,7 +1,6 @@
 class redelinux::nfs
 {
     include redelinux::params
-    include redelinux::apt
 
     $nfs = 'nfs-common'
 
@@ -11,9 +10,9 @@ class redelinux::nfs
     }
 
     service { 'nfs-common':
-        ensure    => running,
-        enable    => true,
-        require   => Package[$nfs],
+        ensure  => running,
+        enable  => true,
+        require => Package[$nfs],
     }
 
     # NFS config files
@@ -31,7 +30,7 @@ class redelinux::nfs
     
     # AutoFS
     package { 'autofs':
-        ensure => present,
+        ensure  => present,
         require => Package[$nfs],
     }
 
@@ -51,34 +50,25 @@ class redelinux::nfs
         notify  => Service['autofs']
     }
     
-    file { 'autofs':
-        ensure => directory,
-        path   => '/etc/autofs/',
-        source => 'puppet:///modules/redelinux/etc/autofs/',
-        owner   => 'root',
-        group   => 'root',
-        mode    => 'a=r,u+w',
-        recurse => remote,
+    util::config_file { 'autofs':
+        ensure  => directory,
+        path    => '/etc/autofs/',
+        recurse => true,
         require => Package['autofs'],
-        notify  => Service['autofs']
+        notify  => Service['autofs'],
     }
 
-
     util::config_file { 'nfs_profile':
-        path       => '/etc/profile.d/nfs_path.sh',
-        mode       => 'a=rx,u+w',
-        require    => Package['autofs'],
+        path    => '/etc/profile.d/nfs_path.sh',
+        mode    => '0655',
+        require => Package['autofs'],
     }
 
     include redelinux::nsswitch
-
-    # Apply nsswitch after installing autofs, and make changes to nsswitch
-    # notify the autofs service.
-    Package['autofs'] -> Class['nsswitch'] ~> Service['autofs']
+    Class['redelinux::nsswitch'] ~> Service['autofs']
 
     # Stupid anchor
     anchor { 'redelinux::nfs::begin': }
-    -> Class['nsswitch']
+    -> Class['redelinux::nsswitch']
     -> anchor { 'redelinux::nfs::end': }
-
 }

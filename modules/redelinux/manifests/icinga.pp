@@ -6,7 +6,7 @@ inherits redelinux::nagios::server
     }
 
     package { ['php5-pgsql', 'libbdb-pgsql']:
-        ensure => installed,
+        ensure => present,
         notify => Service['ido2db'],
     }
 
