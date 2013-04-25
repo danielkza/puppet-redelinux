@@ -4,11 +4,11 @@ class redelinux::puppet_client
     include redelinux::apt
 
     ::apt::source { 'puppetlabs':
-        location          => 'http://apt.puppetlabs.com',
-        repos             => 'main',
-        include_src       => true,
-        key               => '4BD6EC30',
-        key_server        => 'subkeys.pgp.net',
+        location    => 'http://apt.puppetlabs.com',
+        repos       => 'main',
+        include_src => true,
+        key         => '4BD6EC30',
+        key_server  => 'subkeys.pgp.net',
     }
     
     # Puppet

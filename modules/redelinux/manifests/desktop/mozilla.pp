@@ -16,7 +16,7 @@ class redelinux::desktop::mozilla
             repos             => 'iceweasel-release',
             release           => 'squeeze-backports',
             required_packages => 'pkg-mozilla-archive-keyring',
-            include_src => true,
+            include_src       => true,
         }      
     }
         
