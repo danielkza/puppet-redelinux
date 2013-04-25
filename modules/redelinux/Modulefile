@@ -7,6 +7,7 @@ dependency 'puppetlabs-apt'
 dependency 'puppetlabs-stdlib'
 dependency 'danielkza-video_device'
 dependency 'ploperations-interval'
+dependency 'ripienaar-concat'
 
 source 'https://github.com/danielkza/puppet-redelinux'
 project_page 'https://github.com/danielkza/puppet-redelinux'
