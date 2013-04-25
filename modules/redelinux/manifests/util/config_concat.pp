@@ -1,4 +1,4 @@
-define redelinux::config_concat(
+define redelinux::util::config_concat(
     $path,
     $target  = $title,
     $owner   = 'root',
@@ -8,9 +8,27 @@ define redelinux::config_concat(
     $force   = undef,
     $backup  = undef,
     $replace = undef,
+    $order   = 'generic-first',
+    $host_groups  = $redelinux::params::host_groups    
 ) {
+    $order ? {
+        'generic-first': {
+            $order_def   = 10
+            $order_group = 20
+            $order_host  = 30
+        },
+        'generic-last': {
+            $order_def   = 30
+            $order_group = 20
+            $order_host  = 10
+        },
+        default: {
+            fail("invalid order")
+        }
+    }
+
     concat { $target:
-        path    => $path, 
+        path    => $path,
         owner   => $owner,
         group   => $group,
         mode    => $mode,
@@ -20,18 +38,22 @@ define redelinux::config_concat(
         replace => $replace,
     }
 
-    concat::fragment { $target:
-        target  => $target,
-        content => template('redelinux/${target}.erb'),
-        order   => 01,
-    }
-
     Util::Config_fragment {
         target  => $target,
         owner   => $owner,
         group   => $group,
         mode    => $mode,
     }
+
+    $base_resource = ["${target}_base", ]
+    $group_resources = zip(prefix($host_groups, "${target}_group_"), $host_groups)
+
+
+    $host_names = [$::hostname, $::fqdn]
+    $titles_to_host_names = hash(zip(prefix($host_names, "${target}_host_")))
+    define 
+
+    util::config_fragment
 
     if !empty($redelinux::host_groups) {
         util::config_fragment { $redelinux::params::host_groups:
@@ -40,7 +62,7 @@ define redelinux::config_concat(
         }
     }
 
-    util::config_fragment { [$::hostname, $::fqdn]:
+    util::config_fragment { :
         selector => 'host',
         order    => 03,
     }
