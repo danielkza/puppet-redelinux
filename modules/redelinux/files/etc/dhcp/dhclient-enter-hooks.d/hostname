@@ -1,4 +1,0 @@
-#!/bin/sh
-
-sed -i '/^send[[:space:]][[:space:]]*host-name/d' "/etc/dhcp/dhclient.conf"
-echo "send host-name \"`hostname`\";" >> "/etc/dhcp/dhclient.conf"

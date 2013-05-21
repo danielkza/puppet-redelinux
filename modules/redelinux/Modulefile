@@ -1,11 +1,10 @@
-name 'danielkza-redelinux'
+name 'redelinux-redelinux'
 version '0.1'
 author 'Daniel Miranda (danielkza)'
 license 'Apache 2'
 
-dependency 'puppetlabs-apt'
 dependency 'puppetlabs-stdlib'
-dependency 'danielkza-video_device'
+dependency 'puppetlabs-apt'
 dependency 'ploperations-interval'
 dependency 'ripienaar-concat'
 

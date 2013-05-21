@@ -1,0 +1,7 @@
+name 'redelinux-cfgutil'
+version '0.1'
+author 'Daniel Miranda (danielkza)'
+license 'Apache 2'
+
+dependency 'ripienaar-concat'
+dependency 'puppetlabs-stdlib'

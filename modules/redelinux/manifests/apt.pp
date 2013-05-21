@@ -5,7 +5,7 @@ class redelinux::apt(
 
     $mirror_real = $mirror ? {
         undef   => $redelinux::params::debian_mirror,
-        default => $mirror
+        default => $mirror,
     }
 
     class { '::apt':
@@ -14,22 +14,25 @@ class redelinux::apt(
         purge_preferences_d  => true,
     }
 
-    if $redelinux::params::debian_pre_wheezy
+    if $redelinux::params::debian_use_backports
     {
         # Add backports repo
         class { '::apt::backports': }
+    }
 
+    if $redelinux::params::debian_use_testing
+    {
         # Add testing repo. Very low priority, so by default nothing will
         # ever be installed from it
-        ::apt::source { 'debian_wheezy': 
+        ::apt::source { 'debian_testing': 
             location          => $mirror_real,
-            release           => 'wheezy',
+            release           => 'testing',
             repos             => 'main contrib non-free',
             include_src       => true,
             required_packages => 'debian-keyring debian-archive-keyring',
         }
 
-        ::apt::pin { 'wheezy':
+        ::apt::pin { 'testing':
             priority => -10
         }
 
