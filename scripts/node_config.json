@@ -18,12 +18,7 @@
         "nfs": {},
         "puppet_client": {},
         "ssh::server": {},
-        "ssh::client": {},
-        "icinga": {},
-        "nagios": {
-            "use_provider": "icinga"
-        },
-        "nagios::host": {}
+        "ssh::client": {}
     }
 },
 "groups":
