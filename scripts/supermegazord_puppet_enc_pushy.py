@@ -4,6 +4,7 @@ import sys
 import os
 import os.path
 from copy import deepcopy
+import traceback
 
 import json
 import yaml
@@ -61,6 +62,7 @@ def retrieve_node_config(path):
         with open(os.path.join(path)) as fp:
             return json.load(fp)
     except:
+        traceback.print_exc()
         sys.stderr.write("Failed to load node configuration!\n")
 
     return None
@@ -72,7 +74,7 @@ def retrieve_machine_info():
     group_aliases = None
 
     try:
-        with pushy.connect("ssh:megazords", username="megazord") as conn:
+        with pushy.connect("ssh:megazord", username="megazord") as conn:
             smz_machines = conn.modules.supermegazord.db.machines
 
             # Bring data locally so we can close the connection
