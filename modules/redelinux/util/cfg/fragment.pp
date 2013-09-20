@@ -1,4 +1,4 @@
-define cfgutil::config_fragment(
+define redelinux::util::cfg::config_fragment(
     $target,
     $selector = undef,
     $owner    = undef,

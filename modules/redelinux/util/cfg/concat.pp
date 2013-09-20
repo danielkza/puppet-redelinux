@@ -1,4 +1,4 @@
-define cfgutil::config_concat(
+define redelinux::util::cfg::concat(
     $path,
     $host_groups = undef,
     $target      = $title,
@@ -38,29 +38,31 @@ define cfgutil::config_concat(
         replace => $replace,
     }
 
-    Cfgutil::Config_fragment {
+    Util::Cfg::Fragment {
         target  => $target,
         owner   => $owner,
         group   => $group,
         mode    => $mode,
     }
 
-    $base_resource = ["${target}_base", ]
-    $group_resources = zip(prefix($host_groups, "${target}_group_"), $host_groups)
-
-
-    $host_names = [$::hostname, $::fqdn]
-    $titles_to_host_names = hash(zip(prefix($host_names, "${target}_host_")))
-
-    if !empty($host_groups) {
-        Cfgutil::config_fragment { $host_groups:
+    each($host_groups) |$group| {
+        util::cfg::fragment { "${target}_group_${group}":
+            name     => $group,
             selector => 'group',
             order    => $order_group,
         }
     }
 
-    Cfgutil::config_fragment { :
-        selector => 'host',
-        order    => $order_host,
+    each([$::hostname, $::fqdn]) |$host| {
+        util::cfg::fragment { "${target}_host_${host}":
+            name     => $group,
+            selector => 'host',
+            order    => $order_host,
+        }
+    }
+
+    util::cfg::fragment { "${target}_base":
+        name     => $base,
+        order    => $order,
     }
 }

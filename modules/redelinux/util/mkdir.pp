@@ -15,7 +15,7 @@ define redelinux::util::mkdir(
             mode   => $mode,
         }
         
-        cfgutil::mkdir { $path_parent:
+        util::mkdir { $path_parent:
             owner => $owner,
             group => $group,
             mode  => $mode,
