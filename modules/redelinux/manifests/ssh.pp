@@ -16,7 +16,7 @@ class redelinux::ssh
             require => Package['ssh-server'],
         }
 
-        util::cfg_concat { 'sshd_config':
+        util::cfg_file { 'sshd_config':
             path   => '/etc/ssh/sshd_config',
             notify => Service['ssh-server'],
         }
@@ -29,7 +29,7 @@ class redelinux::ssh
             ensure => present,
         }
 
-        util::cfg_concat { 'ssh_config':
+        util::cfg_file { 'ssh_config':
             path    => '/etc/ssh/ssh_config',
             require => Package['ssh-client'],
         }
