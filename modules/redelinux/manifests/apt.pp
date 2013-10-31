@@ -14,10 +14,27 @@ class redelinux::apt(
         purge_preferences_d  => true,
     }
 
+    ::apt::pin { 'pin_stable':
+        priority => 700,
+        release  => "stable",
+        order    => 10,
+    }
+
     if $redelinux::params::debian_use_backports
     {
         # Add backports repo
         class { '::apt::backports': }
+
+        ::apt::pin { 'pin_backports':
+            priority => 650,
+            release  => "${::lsbdistcodename}-backports",
+            order    => 20,
+        }
+
+        # Stupid anchor
+        Anchor['redelinux::apt::begin']
+        -> Class['::apt::backports']
+        -> Anchor['redelinux::apt::end']
     }
 
     if $redelinux::params::debian_use_testing
@@ -32,14 +49,11 @@ class redelinux::apt(
             required_packages => 'debian-keyring debian-archive-keyring',
         }
 
-        ::apt::pin { 'testing':
-            priority => -10
+        ::apt::pin { 'pin_testing':
+            priority => 500,
+            release  => 'testing',
+            order    => 30,
         }
-
-        # Stupid anchor
-        Anchor['redelinux::apt::begin']
-        -> Class['::apt::backports']
-        -> Anchor['redelinux::apt::end']
     }
 
     ::apt::source { "debian_${::lsbdistcodename}":
@@ -63,14 +77,12 @@ class redelinux::apt(
         key_server => 'subkeys.pgp.net',
     }
 
-    ::apt::source { 'puppetlabs':
-        location          => 'http://apt.puppetlabs.com',
-        repos             => 'main',
-        include_src       => true,
-        key               => '4BD6EC30',
-        key_server        => 'subkeys.pgp.net'
+    ::apt::pin { 'pin_redelinux':
+        priority => 990,
+        origin   => 'apt.linux.ime.usp.br',
+        order    => 9,
     }
-    
+
     Class['::Apt::Update'] -> Package<| |> 
 
     anchor { 'redelinux::apt::begin': }
