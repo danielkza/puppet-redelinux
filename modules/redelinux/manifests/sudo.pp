@@ -6,13 +6,13 @@ class redelinux::sudo
     }
 
     # Sudo's config files
-    cfgutil::config_file { 'sudoers':
+    util::cfg_file { 'sudoers':
         path    => '/etc/sudoers',
         mode    => '0440',
         require => Package['sudo'],
     }
     
-    cfgutil::config_file { 'sudoers.d':
+    util::cfg_file { 'sudoers.d':
         ensure  => directory,
         path    => '/etc/sudoers.d/',
         mode    => '0440',

@@ -32,7 +32,7 @@ class redelinux::puppet_client
         require => [Package['puppet'], Service['puppet']]
     }
 
-    cfgutil::config_file { 'puppet.conf':
+    util::cfg_file { 'puppet.conf':
         path          => '/etc/puppet/puppet.conf',
         extra_sources => ['/etc/puppet/puppet.conf'],
         require       => Package['puppet'],

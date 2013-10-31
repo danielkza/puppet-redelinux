@@ -15,17 +15,20 @@
 # but with sane defaults allowing them to be ommited for configuration files.
 # The only special case is 'content', which disables the source lookup logic.
 
-define cfgutil::config_file(
+define redelinux::util::cfg_file(
     $path          = $title,
     $ensure        = file,
     $content       = '$undef$',
     $source        = undef,
+    $source_prefix = undef,
     $replace       = undef,
-    $mode          = undef,
+    $owner         = 'root',
+    $group         = 'root',
+    $mode          = '0644',
     $recurse       = undef,
     $extra_sources = undef,
-)
-{
+    $host_groups   = $redelinux::params::host_groups,
+) {
     if $ensure == 'absent' {
         file { $title:
             ensure => absent,
@@ -34,12 +37,9 @@ define cfgutil::config_file(
     } else {
 		File {
 		    ensure  => $ensure,
-		    owner   => 'root',
-		    group   => 'root',
-		    mode    => $mode ? {
-				undef   => '0644',
-				default => $mode,
-			},
+		    owner   => $owner,
+		    group   => $group,
+		    mode    => $mode,
 		    path    => $path,
 		    replace => $replace,
 		    recurse => $recurse,
@@ -59,23 +59,20 @@ define cfgutil::config_file(
 				content => $content,
 		    }
 		} else {
-		    $selectors = flatten([$::fqdn, $::hostname, sort($redelinux::params::host_groups)])
-		    $selector_sources = prefix($selectors, "puppet:///modules/${caller_module_name}/${path}$$")
-		     
-		    if $extra_sources != undef {
-				# we have two cases: extra_sources is either an array or a string
-				# either way we encapsulate it in another array and let flatten
-				# fix everything
-				$extra_sources_real = [$extra_sources]
-		    } else {
-				$extra_sources_real = []
-		    }
-	            
-            $path_clean = regsubst($path, '/+$', '')
-		    $sources = flatten([$selector_sources,
-							   "puppet:///modules/${caller_module_name}/${path_clean}",
-							    $extra_sources_real])
-
+			$selectors = flatten([$::fqdn, $::hostname, sort($host_groups)])
+            
+			if empty($source) {
+				if $source_prefix {
+					$source_real = module_file_url($path)
+				} else {
+					$source_real = module_file_url("${source_prefix}/${path}")
+				}
+			} else {
+				$source_real = $source
+			}
+		    
+		    $sources = any2array($source_real) + any2array($extra_sources)
+	        crit("SOURCES ********* $sources")
 		    file { $title:
 				source => $sources
 		    }

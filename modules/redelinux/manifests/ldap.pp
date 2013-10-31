@@ -1,5 +1,9 @@
 class redelinux::ldap
 {
+    Util::Cfg_file {
+        source_prefix => "ldap"
+    }
+
     # LDAP
     $ldap = ['libnss-ldapd', 'kstart']
 
@@ -20,14 +24,12 @@ class redelinux::ldap
     }
 
     # LDAP config files
-    file { 'ldap.conf':
+    file { '/etc/ldap/ldap.conf':
         ensure  => absent,
-        path    => '/etc/ldap/ldap.conf',
         require => Package[$ldap],
     }
             
-    util::config_file { 'nslcd.conf':
-        path    => '/etc/nslcd.conf',
+    util::cfg_file { '/etc/nslcd.conf':
         require => Package[$ldap],
         notify  => Service['nslcd'],
     }

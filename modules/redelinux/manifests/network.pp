@@ -16,7 +16,7 @@ class redelinux::network
     # Fix Debian's stupid habit of not sending hostname on DHCP requests
     if $redelinux::params::debian_pre_wheezy
     {
-        util::config_file { 'dhclient_hostname_hook':
+        util::cfg_file { 'dhclient_hostname_hook':
             path   => '/etc/dhcp/dhclient-enter-hooks.d/hostname',
             notify => Service['networking'],
         }
