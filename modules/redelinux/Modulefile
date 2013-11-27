@@ -8,5 +8,7 @@ dependency 'puppetlabs-apt'
 dependency 'ploperations-interval'
 dependency 'ripienaar-concat'
 
+dependency 'redelinux-nsswitch'
+
 source 'https://github.com/danielkza/puppet-redelinux'
 project_page 'https://github.com/danielkza/puppet-redelinux'

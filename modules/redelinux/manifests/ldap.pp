@@ -34,9 +34,7 @@ class redelinux::ldap
         notify  => Service['nslcd'],
     }
 
-    include redelinux::nsswitch
-
-    anchor { 'redelinux::ldap::begin': }
-    -> Class['redelinux::nsswitch']
-    -> anchor { 'redelinux::ldap::end': }
+    nsswitch::database { ['passwd', 'group', 'shadow']:
+        services => 'files ldap',
+    }
 }

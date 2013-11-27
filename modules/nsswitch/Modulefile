@@ -1,0 +1,6 @@
+name 'redelinux-nsswitch'
+version '0.1'
+author 'Daniel Miranda (danielkza)'
+license 'Apache 2'
+
+dependency 'puppetlabs-stdlib'

@@ -65,11 +65,7 @@ class redelinux::nfs
         require => Package['autofs'],
     }
 
-    include redelinux::nsswitch
-    Class['redelinux::nsswitch'] ~> Service['autofs']
-
-    # Stupid anchor
-    anchor { 'redelinux::nfs::begin': }
-    -> Class['redelinux::nsswitch']
-    -> anchor { 'redelinux::nfs::end': }
+    nsswitch::database { 'automount':
+        services => 'files'
+    }
 }
