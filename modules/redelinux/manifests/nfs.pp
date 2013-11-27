@@ -2,6 +2,10 @@ class redelinux::nfs
 {
     include redelinux::params
 
+    Redelinux::Util::Cfg_file {
+        source_prefix => "nfs"
+    }
+
     $nfs = 'nfs-common'
 
     # NFS
@@ -16,14 +20,12 @@ class redelinux::nfs
     }
 
     # NFS config files
-    util::cfg_file { 'nfs-common_default':
-        path    => '/etc/default/nfs-common',
+    util::cfg_file { '/etc/default/nfs-common':
         require => Package[$nfs],
         notify  => Service['nfs-common'],
     }
     
-    util::cfg_file { 'idmapd.conf':
-        path    => '/etc/idmapd.conf',
+    util::cfg_file { '/etc/idmapd.conf':
         require => Package[$nfs],
         notify  => Service['nfs-common'],
     }
@@ -35,6 +37,7 @@ class redelinux::nfs
     }
 
     $autofs_service_hasstatus = !$redelinux::params::debian_pre_wheezy
+    
     service { 'autofs':
         ensure    => running,
         enable    => true,
@@ -44,15 +47,13 @@ class redelinux::nfs
     }
     
     # AutoFS config files
-    util::cfg_file { 'autofs_default':
-        path    => '/etc/default/autofs',
+    util::cfg_file { '/etc/default/autofs':
         require => Package['autofs'],
         notify  => Service['autofs']
     }
     
-    util::cfg_file { 'autofs':
+    util::cfg_file { '/etc/autofs':
         ensure  => directory,
-        path    => '/etc/autofs/',
         recurse => true,
         require => Package['autofs'],
         notify  => Service['autofs'],

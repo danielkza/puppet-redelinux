@@ -2,6 +2,10 @@ class redelinux::ssh
 {
     include redelinux::apt
 
+    Redelinux::Util::Cfg_file {
+        source_prefix => 'ssh'
+    }
+
     class server
     {
         package { 'ssh-server':
@@ -16,10 +20,11 @@ class redelinux::ssh
             require => Package['ssh-server'],
         }
 
+        /*
         util::cfg_file { 'sshd_config':
             path   => '/etc/ssh/sshd_config',
             notify => Service['ssh-server'],
-        }
+        }*/
     }
 
     class client
@@ -29,9 +34,10 @@ class redelinux::ssh
             ensure => present,
         }
 
+        /*
         util::cfg_file { 'ssh_config':
             path    => '/etc/ssh/ssh_config',
             require => Package['ssh-client'],
-        }
+        }*/
     }
 }

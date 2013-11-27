@@ -2,7 +2,7 @@ class redelinux::kerberos
 {
     include redelinux::params
     
-    Util::Cfg_file {
+    Redelinux::Util::Cfg_file {
         source_prefix => "kerberos"
     }
 

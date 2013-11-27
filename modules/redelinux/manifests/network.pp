@@ -2,6 +2,10 @@ class redelinux::network
 {
     include redelinux::params
 
+    Redelinux::Util::Cfg_file {
+        source_prefix => "network"
+    }
+
     # Fix debian's weird hosts file
     host { $::hostname:
         ensure => absent,

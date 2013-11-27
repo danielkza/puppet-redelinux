@@ -3,6 +3,11 @@ class redelinux::puppet_client
     include redelinux::params
     include redelinux::apt
 
+    Redelinux::Util::Cfg_file {
+        source_prefix => "puppet"
+    }
+
+
     ::apt::source { 'puppetlabs':
         location    => 'http://apt.puppetlabs.com',
         repos       => 'main',
@@ -32,8 +37,7 @@ class redelinux::puppet_client
         require => [Package['puppet'], Service['puppet']]
     }
 
-    util::cfg_file { 'puppet.conf':
-        path          => '/etc/puppet/puppet.conf',
+    util::cfg_file { '/etc/puppet/puppet.conf':
         extra_sources => ['/etc/puppet/puppet.conf'],
         require       => Package['puppet'],
     }
