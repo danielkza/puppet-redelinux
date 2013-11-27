@@ -40,64 +40,81 @@ define redelinux::util::cfg_file(
     $source_prefix   = undef,
     $host_separator  = '@',
     $group_separator = '#', 
+    $extra_sources   = undef,
+    $host_groups     = sort($redelinux::params::host_groups),
     $replace         = undef,
     $owner           = 'root',
     $group           = 'root',
     $mode            = '0644',
     $recurse         = undef,
-    $extra_sources   = undef,
-    $host_groups     = sort($redelinux::params::host_groups),
-) {
+    $recurselimit    = undef,
+    $sourceselect    = undef,
+    $purge           = undef,
+    $links           = undef,
+    $force           = undef,
+
+) { 
+
+    File {
+        ensure  => $ensure,
+        path    => $path,
+        replace => $replace,
+        owner   => $owner,
+        group   => $group,
+        mode    => $mode,
+        recurse => $recurse,
+        recurselimit => $recurselimit,
+        sourceselect => $sourceselect,
+        purge => $purge,
+        links => $links,
+        force => $force,
+    }
+
     if $ensure == 'absent' {
         file { $title:
             ensure => absent,
             path   => $path,
         }
     } else {
-		File {
-		    ensure  => $ensure,
-		    owner   => $owner,
-		    group   => $group,
-		    mode    => $mode,
-		    path    => $path,
-		    replace => $replace,
-		    recurse => $recurse,
-	    }
+        # Work around the fact that even passing content as undef sometimes
+        # causes the 'You cannot specify more than one of content, source, target'
+        # error.
+        # For some stupid reason, undef == '', work around it as well.
 
-		# Work around the fact that even passing content as undef sometimes
-		# causes the 'You cannot specify more than one of content, source, target'
-		# error.
-		# For some stupid reason, undef == '', work around it as well.
+        if $content != '$undef$' {
+            if $source != undef {
+                fail("You must specify one of: content, source")
+            }
 
-		if $content != '$undef$' {
-		    if $source != undef {
-				fail("You must specify one of: content, source")
-		    }
+            file { $title: 
+                content => $content,
+            }
+        } else {    
+            if empty($source) {
+                if $source_prefix {
+                    $source_path = module_file_url("${source_prefix}/${path}")
+                } else {
+                    $source_path = module_file_url($path)
+                }
+            } else {
+                $source_path = $source
+            }
 
-		    file { $title: 
-				content => $content,
-		    }
-		} else {    
-			if empty($source) {
-				if $source_prefix {
-					$source_path = module_file_url($path)
-				} else {
-					$source_path = module_file_url("${source_prefix}/${path}")
-				}
+            $host_sources = prefix([$::fqdn, $::hostname],
+                                   "${source_path}${host_separator}")
+            $group_sources = prefix($host_groups,
+                                   "${source_path}${group_separator}")    
+            $base_sources = ($host_sources + $group_sources) << $source_path
+            
+            if empty($extra_sources) {
+            	$sources = $base_sources
+            } else {
+            	$sources = $base_sources + any2array($extra_sources)
+            }
 
-				$host_sources = prefix([$::fqdn, $::hostname],
-					                   "${source_path}${host_separator}")
-				$group_sources = prefix($host_groups),
-									   "${source_path}${group_separator}")	
-				$sources = (($host_sources + $group_sources) << $source_path) + $extra_sources
-			} else {
-				$sources = $source
-			}
-
-	        crit("SOURCES ********* $sources")
-		    file { $title:
-				source => $sources
-		    }
+            file { $title:
+                source => $sources,
+            }
 		}
-    }
+	}
 }
