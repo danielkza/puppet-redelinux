@@ -54,9 +54,11 @@ class redelinux::apt(
     }
 
     ::apt::source { 'foreman':
-        location   => 'http://deb.foreman.org',
-        repos      => 'stable',
-        key_source => 'https://deb.theforeman.org/foreman.asc',
+        location    => 'http://deb.theforeman.org/',
+        repos       => 'stable',
+        include_src => false,
+        key         => 'E775FF07',
+        key_source  => 'http://deb.theforeman.org/foreman.asc',
     }
 
     if $redelinux::params::debian_use_backports
