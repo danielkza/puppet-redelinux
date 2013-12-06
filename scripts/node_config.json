@@ -43,6 +43,12 @@
             {
                 "restart_puppet":  false,
                 "puppetdb_server": "puppet.linux.ime.usp.br"
+            },
+            "::foreman::puppetmaster":
+            {
+                "foreman_url": "https://elise.linux.ime.usp.br",
+                "reports": true,
+                "facts": true
             }
         }
     }

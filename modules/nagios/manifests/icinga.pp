@@ -17,7 +17,7 @@ inherits nagios::server
         before  => Service['icinga'],
     }
 
-    util::config_file { 'ido2db.cfg':
+    util::cfg::file { 'ido2db.cfg':
         path   => "${conf_dir}/ido2db.cfg",
         mode   => '0600',
         notify => Service['ido2db', 'icinga'],

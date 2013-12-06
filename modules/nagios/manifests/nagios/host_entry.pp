@@ -17,7 +17,7 @@ define nagios::host_entry(
             default => $address,
         }
 
-        cfgutil::config_file { $resource_name:
+        cfgutil::cfg::file { $resource_name:
             ensure  => $ensure,
             path    => "${nagios::params::object_dir}/host-${host_name}.cfg",
             content => template("nagios/nagios_host.erb"),

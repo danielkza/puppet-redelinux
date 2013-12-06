@@ -1,4 +1,4 @@
-# /etc/default/icinga
+git # /etc/default/icinga
 
 # location of the icinga configuration file
 ICINGACFG="/etc/icinga/icinga.cfg"
