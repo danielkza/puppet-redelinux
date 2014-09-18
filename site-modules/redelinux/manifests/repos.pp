@@ -15,6 +15,7 @@ class redelinux::repos(
             class { redelinux::repos::ubuntu:
                 use_backports => $use_backports
             }
+
             contain redelinux::repos::ubuntu
         }
         default: { fail("Unsupported operating system '${::operatingsystem}") }
@@ -29,6 +30,7 @@ class redelinux::repos(
     } else {
         include apt
     }
+    
     contain apt
 
     apt::source { 'redelinux':

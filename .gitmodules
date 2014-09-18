@@ -1,3 +1,0 @@
-[submodule "modules/video_device"]
-	path = modules/video_device
-	url = git@github.com:danielkza/puppet-video_device
