@@ -1,4 +1,4 @@
-define redelinux::util::mkdir(
+define file_util::mkdir(
     $path  = $title,
     $owner = undef,
     $group = undef,

@@ -32,7 +32,7 @@
 #                 These are *absolute* URLs.
 # host_groups   - List of group names to be used 
 
-define redelinux::util::cfg_file(
+define file_util::cfg_file(
     $path            = $title,
     $ensure          = file,
     $content         = '$undef$',
@@ -41,7 +41,7 @@ define redelinux::util::cfg_file(
     $host_separator  = '@',
     $group_separator = '#', 
     $extra_sources   = undef,
-    $host_groups     = sort($redelinux::params::host_groups),
+    $host_groups     = undef,
     $replace         = undef,
     $owner           = 'root',
     $group           = 'root',
@@ -100,8 +100,15 @@ define redelinux::util::cfg_file(
                 $source_path = $source
             }
 
-            $host_sources = prefix([$::fqdn, $::hostname],
-                                   "${source_path}${host_separator}")
+            if $trusted[certname] {
+                $trusted_hostname = split($trusted[certname], '[.]')[0]
+                $host_sources = prefix(
+                    [$trusted[certname], $trusted_hostname],
+                    "${source_path}${host_separator}")
+            } else {
+                $host_sources = []
+            }
+
             $group_sources = prefix($host_groups,
                                    "${source_path}${group_separator}")    
             $base_sources = ($host_sources + $group_sources) << $source_path
