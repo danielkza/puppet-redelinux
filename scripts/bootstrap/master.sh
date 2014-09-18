@@ -1,11 +1,9 @@
 #!/bin/bash
 
-set -ex
+set -e
 
-base_dir=$(readlink -f $(dirname "$0"))
-cd "$base_dir"
-
-./bootstrap.sh
+base_dir=$(readlink -f "$(dirname "${BASH_SOURCE[0]}")")
+"${base_dir}/bootstrap.sh"
 
 puppet module install theforeman-puppet
 puppet apply --noop master.pp

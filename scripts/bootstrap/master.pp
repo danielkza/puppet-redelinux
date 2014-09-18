@@ -3,7 +3,7 @@ class { '::puppet':
     server_passenger => true,
     
     server_ca        => false,
-    ca_server        => 'foreman.linux.ime.usp.br',
+    ca_server        => 'puppetca.linux.ime.usp.br',
     server_storeconfigs_backend => 'puppetdb',
     
     server_enc_api     => 'v2',
