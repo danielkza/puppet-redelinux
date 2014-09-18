@@ -1,8 +1,6 @@
 class redelinux::ssh
 {
-    include redelinux::apt
-
-    Redelinux::Util::Cfg_file {
+    Fileutil::Cfg_file {
         source_prefix => 'ssh'
     }
 

@@ -1,8 +1,9 @@
 class redelinux::desktop::mozilla
 {
-    include redelinux::params
-    include redelinux::apt
-    
+    Package {
+        ensure => installed
+    }
+
     if !$redelinux::params::debian_pre_wheezy {      
         apt::source { 'mozilla':
             location    => 'http://mozilla.debian.net',
@@ -21,7 +22,6 @@ class redelinux::desktop::mozilla
     }
         
     package { ['iceweasel', 'icedove']:
-        ensure  => latest,
         require => Apt::Source['mozilla']
     } 
 }

@@ -1,10 +1,7 @@
-class redelinux::programming::editors_and_ides
+class redelinux::packages::programming::editors_and_ides
 {   
-    include redelinux::params
-    include redelinux::apt
-
     Package {
-        ensure => latest,
+        ensure => installed,
     }
 
     # IDEs

@@ -1,10 +1,7 @@
 class redelinux::programming::tools_and_libs
 {
-    include redelinux::params
-    include redelinux::apt
-
     Package {
-        ensure => latest,
+        ensure => installed,
     }
 
     # Debugging / profiling

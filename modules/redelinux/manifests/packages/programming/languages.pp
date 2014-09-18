@@ -1,10 +1,7 @@
 class redelinux::programming::languages
 {
-    include redelinux::params
-    require redelinux::params
-
     Package {
-        ensure => latest,
+        ensure => installed,
     }
 
     # Python
@@ -19,7 +16,7 @@ class redelinux::programming::languages
     package { 'build-essential': }
     package { ['gcc', 'g++', 'libc-dev']: }
     package { 'clang': }
-    package { ['make', 'automake', 'autoconf']: }
+    package { ['make', 'automake', 'autoconf', 'autoheader']: }
     package { ['cmake', 'cmake-curses-gui', 'cmake-qt-gui']: }
     # Haskell
     package { 'haskell-platform': }
