@@ -11,9 +11,9 @@ class redelinux::repos::ubuntu(
         required_packages => 'ubuntu-keyring ubuntu-archive-keyring',
     }
 
-    apt::pin { 'pin-stable':
+    apt::pin { 'pin-release':
         priority => 500,
-        release  => 'stable',
+        release  => $::lsbdistcodename,
         order    => 30,
     }
 
