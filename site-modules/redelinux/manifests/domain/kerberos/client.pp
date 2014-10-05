@@ -1,25 +1,25 @@
 class redelinux::kerberos(
-    $realm = hiera('redelinux::kerberos::realm'))
+  $realm = hiera('redelinux::kerberos::realm'))
 {
-    Fileutil::Cfg_file {
-        source_prefix => "kerberos"
-    }
+  Fileutil::Cfg_file {
+    source_prefix => "kerberos"
+  }
 
-    package { ["krb5-user", "libpam-krb5"]:
-        ensure => present
-    }
+  package { ["krb5-user", "libpam-krb5"]:
+    ensure => present
+  }
 
-    util::cfg_file { '/etc/krb5.conf':
-        require => Package[$kerberos],
-    }
+  util::cfg_file { '/etc/krb5.conf':
+    require => Package[$kerberos],
+  }
 
-    $principals = generate('/usr/bin/kadmin', '-k', '-q', 'listprincs */admin')
+  $principals = generate('/usr/bin/kadmin', '-k', '-q', 'listprincs */admin')
 
-    if !empty($principals) {  
-        k5login { 'root':
-            ensure     => present,
-            path       => '/root/.k5login',
-            principals => $principals
-        }
+  if !empty($principals) {  
+    k5login { 'root':
+      ensure     => present,
+      path       => '/root/.k5login',
+      principals => $principals
     }
+  }
 }    

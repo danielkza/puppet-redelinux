@@ -1,4 +1,4 @@
 node default
 {
-    stage { 'pre-deploy': } -> Stage['main']
+  stage { 'pre-deploy': } -> Stage['main']
 }
