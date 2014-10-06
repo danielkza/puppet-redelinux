@@ -1,6 +1,7 @@
 require 'puppet'
-module Puppet::Parser::Functions
-    newfunction(:file_exists, :type => :rvalue) do |args|
-        return File.exists?(args[0])
-    end
+
+Puppet::Parser::Functions.newfunction(:file_exists, :type => :rvalue,
+  :arity => 1) \
+do |args|
+  Puppet::FileSystem.exists?(args[0])
 end
