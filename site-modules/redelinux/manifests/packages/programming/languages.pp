@@ -1,4 +1,4 @@
-class redelinux::programming::languages
+class redelinux::packages::programming::languages
 {
   Package {
     ensure => installed,

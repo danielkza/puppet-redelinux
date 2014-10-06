@@ -1,7 +1,7 @@
-class redelinux::desktop::xfce
+class redelinux::packages::desktop::xfce
 {
   Package {
-    ensure => installed,
+    ensure => installed
   }
 
   package { ['xfce4', 'xfce4-goodies ']: }

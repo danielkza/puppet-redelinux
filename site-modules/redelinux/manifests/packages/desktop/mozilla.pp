@@ -1,4 +1,4 @@
-class redelinux::desktop::mozilla
+class redelinux::packages::desktop::mozilla
 {
   Package {
     ensure => installed

@@ -1,4 +1,4 @@
-class redelinux::nfs
+class redelinux::domain::nfs
 {
   Redelinux::Util::Cfg_file {
     source_prefix => "nfs"

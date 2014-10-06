@@ -1,7 +1,7 @@
-class redelinux::desktop::apps
+class redelinux::packages::desktop::apps
 {
   Package {
-    ensure => installed,
+    ensure => installed
   }
 
   package { 'blender': }

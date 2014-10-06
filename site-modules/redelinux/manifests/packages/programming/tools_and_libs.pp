@@ -1,7 +1,7 @@
-class redelinux::programming::tools_and_libs
+class redelinux::packages::programming::tools_and_libs
 {
   Package {
-    ensure => installed,
+    ensure => installed
   }
 
   # Debugging / profiling

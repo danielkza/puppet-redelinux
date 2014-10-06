@@ -1,5 +1,4 @@
-class redelinux::kerberos(
-  $realm = hiera('redelinux::kerberos::realm'))
+class redelinux::domain::kerberos::client
 {
   Fileutil::Cfg_file {
     source_prefix => "kerberos"

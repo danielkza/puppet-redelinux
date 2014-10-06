@@ -1,4 +1,4 @@
-class redelinux::ntp::client(
+class redelinux::domain::ntp::client(
   $servers)
 {
   class { ntp:

@@ -1,4 +1,4 @@
-class redelinux::ldap
+class redelinux::domain::ldap
 {
   Redelinux::Util::Cfg_file {
     source_prefix => "ldap"

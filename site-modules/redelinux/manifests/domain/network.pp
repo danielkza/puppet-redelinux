@@ -1,4 +1,4 @@
-class redelinux::network
+class redelinux::domain::network
 {
   Redelinux::Util::Cfg_file {
     source_prefix => "network"

@@ -1,4 +1,4 @@
-class redelinux::ntp::server(
+class redelinux::domain::ntp::server(
   $servers,
   $subnet_ip,
   $subnet_mask)
