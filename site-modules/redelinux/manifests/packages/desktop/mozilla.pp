@@ -4,24 +4,25 @@ class redelinux::desktop::mozilla
     ensure => installed
   }
 
-  if !$redelinux::params::debian_pre_wheezy {      
-    apt::source { 'mozilla':
-      location    => 'http://mozilla.debian.net',
-      repos       => 'main',
-      release     => 'experimental',
-      include_src => true,
-    }
-  } else {
+  if $::operatingsystem == 'Debian' && $::lsbmajdistrelease <= 7 { 
     apt::source { 'mozilla':
       location          => 'http://mozilla.debian.net',
       repos             => 'iceweasel-release',
-      release           => 'squeeze-backports',
+      release           => '${::lsbdistcodename}-backports',
       required_packages => 'pkg-mozilla-archive-keyring',
-      include_src       => true,
-    }      
-  }
+      include_src       => true
+    }
 
-  package { ['iceweasel', 'icedove']:
-    require => Apt::Source['mozilla']
-  } 
+    apt::pin { 'debian-mozilla':
+      priority  => 501,
+      release   => '${::lsbdistcodename}-backports',
+      component => 'iceweasel-release',
+      order     => 40,
+      before    => Apt::Source['mozilla']
+    }
+
+    Apt::Source['mozilla'] -> Package['iceweasel', 'icedove']
+  }
+  
+  package { ['iceweasel', 'icedove']: }
 }
