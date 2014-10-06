@@ -1,7 +1,5 @@
 class redelinux::nfs
 {
-  include redelinux::params
-
   Redelinux::Util::Cfg_file {
     source_prefix => "nfs"
   }
