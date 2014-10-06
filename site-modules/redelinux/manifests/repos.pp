@@ -1,6 +1,5 @@
 class redelinux::repos(
   $use_backports   = undef,
-  $use_foreman     = undef,
   $purge           = true
 ) {
   case $::operatingsystem {
