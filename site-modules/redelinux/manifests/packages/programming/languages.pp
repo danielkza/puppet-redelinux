@@ -1,7 +1,7 @@
 class redelinux::packages::programming::languages
 {
   Package {
-    ensure => installed,
+    ensure => installed
   }
 
   # Python

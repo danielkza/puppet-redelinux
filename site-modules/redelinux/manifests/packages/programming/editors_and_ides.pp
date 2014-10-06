@@ -1,7 +1,7 @@
 class redelinux::packages::programming::editors_and_ides
 {   
   Package {
-    ensure => installed,
+    ensure => installed
   }
 
   # IDEs
