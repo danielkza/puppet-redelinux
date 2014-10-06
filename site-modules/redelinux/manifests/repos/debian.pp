@@ -11,14 +11,14 @@ class redelinux::repos::debian(
     required_packages => 'debian-keyring debian-archive-keyring',
   }
 
-  apt::pin { 'pin-release':
+  apt::pin { 'default-release':
     priority => 500,
     release  => $::lsbdistcodename,
     order    => 30,
   }
 
   # Debian does not do security updates for non-stable releases
-  $do_security = $::lsbdistcodename ? {
+  $do_security = $::lsbdistrelease ? {
     /^((old)?stable|(\d+[.]?)+))$/ => true,
     default                        => false
   }
@@ -31,10 +31,10 @@ class redelinux::repos::debian(
       include_src => true,
     }
 
-    apt::pin { 'pin-security':
-      priority => 991,
+    apt::pin { 'security':
+      priority => 510,
       label    => "Debian-Security",
-      order    => 10,
+      order    => 20
     }
   }
 
@@ -47,7 +47,7 @@ class redelinux::repos::debian(
       required_packages => 'debian-keyring debian-archive-keyring',
     }
 
-    apt::pin { 'pin-backports':
+    apt::pin { 'backports':
       priority => 450,
       release  => "${::lsbdistcodename}-backports",
       order    => 40,

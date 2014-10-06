@@ -22,7 +22,7 @@ class redelinux::repos(
   }
 
   if $purge {
-    class { apt:
+    class { 'apt':
       purge_sources_list   => true,
       purge_sources_list_d => true,
       purge_preferences_d  => true,
@@ -41,22 +41,22 @@ class redelinux::repos(
     key_server => 'subkeys.pgp.net',
   }
 
-  apt::pin { 'pin-redelinux':
-    priority => 990,
+  apt::pin { 'redelinux':
+    priority => 520,
     origin   => 'apt.linux.ime.usp.br',
     order    => 20,
   }
 
-  if $use_foreman {
-    apt::source { 'foreman':
-      location    => 'http://deb.theforeman.org/',
-      release     => $::lsbdistcodename,
-      repos       => 'stable',
-      include_src => false,
-      key         => 'E775FF07',
-      key_source  => 'http://deb.theforeman.org/foreman.asc',
-    }
-  }
+  # if $use_foreman {
+  #   apt::source { 'foreman':
+  #     location    => 'http://deb.theforeman.org/',
+  #     release     => $::lsbdistcodename,
+  #     repos       => 'stable',
+  #     include_src => false,
+  #     key         => 'E775FF07',
+  #     key_source  => 'http://deb.theforeman.org/foreman.asc',
+  #   }
+  # }
 
   Class['Apt::Update'] -> Package<| |>
 }

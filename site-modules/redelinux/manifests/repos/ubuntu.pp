@@ -8,26 +8,26 @@ class redelinux::repos::ubuntu(
     release           => $::lsbdistcodename,
     repos             => $repos,
     include_src       => true,
-    required_packages => 'ubuntu-keyring ubuntu-archive-keyring',
+    required_packages => 'ubuntu-keyring ubuntu-archive-keyring'
   }
 
-  apt::pin { 'pin-release':
+  apt::pin { 'default-release':
     priority => 500,
     release  => $::lsbdistcodename,
-    order    => 30,
+    order    => 30
   }
 
   apt::source { "ubuntu-${::lsbdistcodename}-security":
     location    => $mirror,
     repos       => $repos,
     release     => "${::lsbdistcodename}/updates",
-    include_src => true,
+    include_src => true
   }
 
-  apt::pin { 'pin-security':
-    priority => 991,
-    label    => "Debian-Security",
-    order    => 10,
+  apt::pin { 'security':
+    priority => 510,
+    label    => 'Ubuntu-Security',
+    order    => 20
   }
 
   if $use_backports {
@@ -39,7 +39,7 @@ class redelinux::repos::ubuntu(
       required_packages => 'ubuntu-keyring ubuntu-archive-keyring',
     }
 
-    apt::pin { 'pin-backports':
+    apt::pin { 'backports':
       priority => 450,
       release  => "${::lsbdistcodename}-backports",
       order    => 40,
