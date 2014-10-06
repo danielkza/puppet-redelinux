@@ -1,37 +1,39 @@
 class redelinux::domain::ldap
 {
-  Redelinux::Util::Cfg_file {
-    source_prefix => "ldap"
+  Util::Cfg_file {
+    source_prefix => 'ldap'
   }
+
   # We only want LDAP authentication, authorization is Kerberos' job
   package {
-    ['libnss-ldapd', 'kstart']:
+    ['libnss-ldapd', 'libsasl2-modules-gssapi-mit', 'kstart']:
       ensure => installed,
-      tag    => 'ldap-pkg';
+      before => Service['nslcd'];
     'libpam-ldapd':
       ensure => absent,
-      tag    => 'ldap-pkg';
+      after  => Package['libnss-ldapd']
   }
 
-  service { 'nslcd':
-    ensure  => running,
-    enable  => true
-  }
-
-  file { '/etc/ldap/ldap.conf':
+  file { 'ldap.conf':
+    path    => '/etc/ldap/ldap.conf'
     ensure  => absent,
-    tag     => 'ldap-cfg'
+    notify  => Service['nslcd'],
+    require => Package['libnss-ldapd']
   }
 
-  util::cfg_file { '/etc/nslcd.conf':
-    tag => 'ldap-cfg'
+  util::cfg_file { ['/etc/nslcd.conf', '/etc/ldap/ca.crt']:
+    notify        => Service['nslcd']
+    require       => Package['libnss-ldapd']
   }
 
   nsswitch::database { ['passwd', 'group', 'shadow']:
-    services => 'files ldap',
-    tag      => 'ldap-cfg'
+    services => 'compat ldap',
+    notify   => Service['nslcd'],
+    require  => Package['libnss-ldapd']
   }
 
-  Package <| tag == 'redelinux::ldap' |> ->
-    Service <| tag == 'redelinux::ldap' |>
+  service { 'nslcd':
+    ensure => running,
+    enable => true
+  }
 }

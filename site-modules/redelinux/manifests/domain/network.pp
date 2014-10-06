@@ -1,12 +1,12 @@
 class redelinux::domain::network
 {
-  Redelinux::Util::Cfg_file {
-    source_prefix => "network"
+  Util::Cfg_file {
+    source_prefix => 'network'
   }
 
   # Fix debian's weird hosts file
-  host { $::hostname:
-    ensure => absent,
+  host { $::hostname, $::fqdn:
+    ensure => present,
   }
 
   host { 'localhost':
@@ -16,7 +16,7 @@ class redelinux::domain::network
   }
 
   # Fix Debian's stupid habit of not sending hostname on DHCP requests
-  if $redelinux::params::debian_pre_wheezy
+  if $::operatingsystem == 'Debian' && $::lsbmajrelease < 7
   {
     util::cfg_file { 'dhclient_hostname_hook':
       path   => '/etc/dhcp/dhclient-enter-hooks.d/hostname',

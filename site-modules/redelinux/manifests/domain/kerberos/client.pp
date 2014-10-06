@@ -1,20 +1,19 @@
 class redelinux::domain::kerberos::client
 {
   Fileutil::Cfg_file {
-    source_prefix => "kerberos"
+    source_prefix => 'kerberos'
   }
 
-  package { ["krb5-user", "libpam-krb5"]:
-    ensure => present
+  package { ['krb5-user', 'libpam-krb5']:
+    ensure => installed
   }
 
   util::cfg_file { '/etc/krb5.conf':
-    require => Package[$kerberos],
+    require => Package[$kerberos]
   }
 
-  $principals = generate('/usr/bin/kadmin', '-k', '-q', 'listprincs */admin')
-
-  if !empty($principals) {  
+  $admin_princs = krb5_list_principals('*/admin')
+  if !empty($admin_princs) {  
     k5login { 'root':
       ensure     => present,
       path       => '/root/.k5login',
