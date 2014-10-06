@@ -23,7 +23,7 @@ class redelinux::packages::programming::editors_and_ides
   # Editors
   ## vim
   package { ['vim', 'vim-gnome', 'vim-latexsuite', 'vim-puppet', 'vim-rails',
-         'vim-scripts', 'vim-syntax-go']: }
+             'vim-scripts', 'vim-syntax-go']: }
   ## the other one
   package { 'emacs': }
   ## nano
@@ -37,16 +37,20 @@ class redelinux::packages::programming::editors_and_ides
   ## SciTE
   package { 'scite': }
   ## Sublime Text
-  ::apt::source { 'sublime-text':
-    location    => 'http://ppa.launchpad.net/webupd8team/sublime-text-2/ubuntu',
+  apt::source { 'sublime-text':
+    location    => 'http://ppa.launchpad.net/webupd8team/sublime-text-3/ubuntu',
     repos       => 'main',
-    release     => 'precise',
+    release     => $::operatingsystem ? {
+      Ubuntu: { $::lsbdistcodename },
+      Debian: { 'precise' }
+    },
     include_src => true,
     key         => 'EEA14886',
     key_server  => 'keyserver.ubuntu.com',
   }
-  
-  package { 'sublime-text':
+
+  package { 'sublime-text-installer':
     require => Apt::Source['sublime-text']
   }
 }
+
