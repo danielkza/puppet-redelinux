@@ -6,6 +6,7 @@ class String
   end
 end
 
-Puppet::Parser::Functions.newfunction(:module_file_url, :type => :rvalue) do |args|
+Puppet::Parser::Functions.newfunction(:module_file_url, :type => :rvalue,
+                                      :arity => 1) do |args|
   return "puppet:///modules/" + lookupvar('caller_module_name') + "/" + args[0].rchomp("/") 
 end
