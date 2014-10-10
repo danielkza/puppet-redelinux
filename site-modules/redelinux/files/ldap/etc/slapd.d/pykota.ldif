@@ -1,0 +1,3 @@
+dn: ou=BillingCodes,ou=Pykota,dc=linux,dc=ime,dc=usp,dc=br
+ou: BillingCodes
+objectClass: organizationalUnit
