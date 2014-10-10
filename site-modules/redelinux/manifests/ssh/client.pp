@@ -1,12 +1,11 @@
 class redelinux::ssh::client
 {
-  Fileutil::Cfg_file {
+  Cfg_file {
     source_prefix => 'ssh'
   }
   
-  package { 'ssh-client':
-    name   => 'openssh-client',
-    ensure => present,
+  package { 'openssh-client':
+    ensure => installed
   }
 
   /*

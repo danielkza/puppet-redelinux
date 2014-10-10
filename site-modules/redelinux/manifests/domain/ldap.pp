@@ -1,6 +1,6 @@
 class redelinux::domain::ldap
 {
-  Util::Cfg_file {
+  Cfg_file {
     source_prefix => 'ldap'
   }
 
@@ -14,7 +14,7 @@ class redelinux::domain::ldap
       after  => Package['libnss-ldapd']
   }
 
-  util::cfg_file {
+  cfg_file {
     '/etc/ldap/ldap.conf':
       ensure  => present;
     '/etc/nslcd.conf':
@@ -53,7 +53,3 @@ class redelinux::domain::ldap
     enable => true
   }
 }
-tls_cacert /var/lib/puppet/ssl/certs/ca.pem
-tls_cert /var/lib/puppet/ssl/certs/${::fqdn}.pem
-tls_key /var/lib/puppet/ssl/private_keys/${::fqdn}.pem
-tls_crlfile /var/lib/puppet/ssl/crl.pem

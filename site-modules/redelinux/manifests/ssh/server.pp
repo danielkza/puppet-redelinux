@@ -1,15 +1,13 @@
 class redelinux::ssh::server
 {
-  package { 'ssh-server':
-    ensure => installed,
-    name   => 'openssh-server'
+  package { 'openssh-server':
+    ensure => installed
   }
 
-  service { 'ssh-server':
-    name    => 'ssh',
+  service { 'ssh':
     ensure  => running,
     enable  => true,
-    require => Package['ssh-server'],
+    require => Package['openssh-server']
   }
 
   /*

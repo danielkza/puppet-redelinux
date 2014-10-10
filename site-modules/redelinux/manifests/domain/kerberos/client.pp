@@ -1,6 +1,6 @@
 class redelinux::domain::kerberos::client
 {
-  Fileutil::Cfg_file {
+  Cfg_file {
     source_prefix => 'kerberos'
   }
 
@@ -8,7 +8,8 @@ class redelinux::domain::kerberos::client
     ensure => installed
   }
 
-  util::cfg_file { '/etc/krb5.conf':
+  cfg_file { '/etc/krb5.conf':
+    ensure  => present,
     require => Package[$kerberos]
   }
 
