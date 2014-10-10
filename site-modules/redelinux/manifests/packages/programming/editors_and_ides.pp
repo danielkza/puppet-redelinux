@@ -28,7 +28,7 @@ class redelinux::packages::programming::editors_and_ides
   package { 'emacs': }
   ## nano
   package { 'nano': }
-  ## Gedit
+  ## GEdit
   package { ['gedit', 'gedit-plugins', 'gedit-r-plugin', 'gedit-latex-plugin']: }
   ## Geany
   package { 'geany': }
@@ -37,16 +37,22 @@ class redelinux::packages::programming::editors_and_ides
   ## SciTE
   package { 'scite': }
   ## Sublime Text
+  apt::key { 'sublime-text':
+    key        => 'EEA14886',
+    key_server => 'keyserver.ubuntu.com'
+  }
+
   apt::source { 'sublime-text':
     location    => 'http://ppa.launchpad.net/webupd8team/sublime-text-3/ubuntu',
     repos       => 'main',
+    require     => Apt::Key['sublime-text'],
     release     => $::operatingsystem ? {
-      Ubuntu: { $::lsbdistcodename },
-      Debian: { 'precise' }
-    },
-    include_src => true,
-    key         => 'EEA14886',
-    key_server  => 'keyserver.ubuntu.com',
+      'Ubuntu' => $::lsbdistcodename,
+      'Debian' => $::lsbdistcodename ? {
+        'wheezy' => 'precise',
+        default  => 'trusty'
+      }
+    }
   }
 
   package { 'sublime-text-installer':
