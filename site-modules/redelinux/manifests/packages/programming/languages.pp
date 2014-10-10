@@ -54,4 +54,30 @@ class redelinux::packages::programming::languages
   package { 'clisp': }
   # Scheme
   package { 'racket': }
+  # Puredata
+  apt::key {
+    'puredata1':
+      key        => '9F0FE587374BBE81',
+      key_server => 'keyserver.ubuntu.com'
+    'puredata2':
+      key        => 'D63D3D09C39F5EEB'
+      key_server => 'keyserver.ubuntu.com'
+  }
+
+  apt::source { 'puredata-extended':
+    location => 'http://apt.puredata.info/releases',
+    repos    => 'main',
+    release  => $::lsbdistcodename
+    require  => Apt::Key['puredata1', 'puredata2']
+  }
+
+  package { 'pd-extended':
+    require => Apt::Source['puredata-extended']
+  }
+
+  package { ['puredata', 'puredata-gui', 'puredata-dev', 'puredata-doc',
+             'puredata-extra', 'puredata-utils', 'puredata-import',
+             'pd-aubio', 'pd-csound', 'pd-cyclone', 'pd-purepd']:
+    before => Package['pd-extended']
+  }
 }
