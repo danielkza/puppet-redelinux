@@ -1,6 +1,6 @@
 class redelinux::domain::kerberos::client
 {
-  Cfg_file {
+  File_util::Cfg {
     source_prefix => 'kerberos'
   }
 
@@ -8,9 +8,9 @@ class redelinux::domain::kerberos::client
     ensure => installed
   }
 
-  cfg_file { '/etc/krb5.conf':
+  file_util::cfg { '/etc/krb5.conf':
     ensure  => present,
-    require => Package[$kerberos]
+    require => Package['krb5-common']
   }
 
   $admin_princs = krb5_list_principals('*/admin')
@@ -18,7 +18,7 @@ class redelinux::domain::kerberos::client
     k5login { 'root':
       ensure     => present,
       path       => '/root/.k5login',
-      principals => $principals
+      principals => $admin_princs
     }
   }
 }    

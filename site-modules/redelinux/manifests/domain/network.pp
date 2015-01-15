@@ -1,6 +1,6 @@
 class redelinux::domain::network
 {
-  Cfg_file {
+  File_util::Cfg {
     source_prefix => 'network'
   }
 
@@ -11,9 +11,9 @@ class redelinux::domain::network
   }
 
   # Fix Debian's stupid habit of not sending hostname on DHCP requests
-  if $::operatingsystem == 'Debian' && $::lsbmajrelease < 7
+  if $::operatingsystem == 'Debian' and $::lsbmajrelease < 7
   {
-    cfg_file { '/etc/dhcp/dhclient-enter-hooks.d/hostname':
+    file_util::cfg { '/etc/dhcp/dhclient-enter-hooks.d/hostname':
       ensure => present,
       notify => Service['networking']
     }

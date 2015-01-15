@@ -1,6 +1,6 @@
 class redelinux::ssh::client
 {
-  Cfg_file {
+  File_util::Cfg {
     source_prefix => 'ssh'
   }
   
@@ -9,7 +9,7 @@ class redelinux::ssh::client
   }
 
   /*
-  util::cfg_file { 'ssh_config':
+  file_util::cfg { 'ssh_config':
     path    => '/etc/ssh/ssh_config',
     require => Package['ssh-client'],
   }*/

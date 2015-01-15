@@ -1,6 +1,6 @@
 class redelinux::domain::ldap
 {
-  Cfg_file {
+  File_util::Cfg {
     source_prefix => 'ldap'
   }
 
@@ -10,11 +10,11 @@ class redelinux::domain::ldap
       ensure => installed,
       before => Service['nslcd'];
     'libpam-ldapd':
-      ensure => absent,
-      after  => Package['libnss-ldapd']
+      ensure  => absent,
+      require => Package['libnss-ldapd']
   }
 
-  cfg_file {
+  file_util::cfg {
     '/etc/ldap/ldap.conf':
       ensure  => present;
     '/etc/nslcd.conf':
@@ -41,12 +41,16 @@ class redelinux::domain::ldap
   #     group  => 'openldap'
   #   }
   # }
+  
+  include nsswitch
 
-  nsswitch::database { ['passwd', 'group', 'shadow']:
-    services => 'compat ldap',
-    notify   => Service['nslcd'],
-    require  => Package['libnss-ldapd']
+  Class['Nsswitch'] {
+    passwd => ['compat', 'ldap'],
+    group  => ['compat', 'ldap'],
+    shadow => ['compat', 'ldap']
   }
+  
+  Package['libnss-ldapd'] -> Class['Nsswitch'] ~> Service['nslcd']
 
   service { 'nslcd':
     ensure => running,

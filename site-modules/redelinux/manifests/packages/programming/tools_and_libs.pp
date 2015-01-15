@@ -57,12 +57,7 @@ class redelinux::packages::programming::tools_and_libs
          'libsdl-ttf2.0-dev']: }
   package { 'libsdl-ruby': }
   ## Allegro
-  package { 'liballegro-dev':
-    name => $redelinux::params::debian_pre_wheezy ? {
-      true    => 'liballegro4-dev',
-      default => 'liballegro4.2-dev'
-    }
-  }
+  package { 'liballegro4.2-dev': }
   ## PyGame
   package { 'python-pygame': }
 

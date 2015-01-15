@@ -1,6 +1,6 @@
 class redelinux::servers::ldap
 {
-  Cfg_file {
+  File_util::Cfg {
     source_prefix => 'ldap'
   }
 

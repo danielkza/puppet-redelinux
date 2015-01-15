@@ -11,7 +11,7 @@ class redelinux::ssh::server
   }
 
   /*
-  util::cfg_file { 'sshd_config':
+  file_util::cfg { 'sshd_config':
     path   => '/etc/ssh/sshd_config',
     notify => Service['ssh-server'],
   }*/

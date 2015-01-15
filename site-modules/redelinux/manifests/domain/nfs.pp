@@ -1,6 +1,6 @@
 class redelinux::domain::nfs
 {
-  Cfg_file {
+  File_util::Cfg {
     source_prefix => 'nfs'
   }
 
@@ -10,7 +10,7 @@ class redelinux::domain::nfs
     before => Service['nfs-common']
   }
 
-  cfg_file { ['/etc/default/nfs-common', '/etc/idmapd.conf']:
+  file_util::cfg { ['/etc/default/nfs-common', '/etc/idmapd.conf']:
     require => Package['nfs-common'],
     notify  => Service['nfs-common']
   }
@@ -26,22 +26,24 @@ class redelinux::domain::nfs
     before => Service['autofs']
   }
 
-  cfg_file {
+  file_util::cfg {
     'autofs-default':
       path   => '/etc/default/autofs',
       notify => Service['autofs'];
     'autofs':
-      path    => '/etc/autofs' 
+      path    => '/etc/autofs',
       ensure  => directory,
       recurse => true,
       notify  => Service['autofs']
   }
+  
+  include nsswitch
 
-  nsswitch::database { 'automount':
-    services => 'files',
-    require  => Package['autofs'],
-    notify   => Service['autofs']
+  Class['Nsswitch'] {
+    automount => ['files']
   }
+    
+  Package['autofs'] -> Class['Nsswitch'] ~> Service['autofs']
 
   service { 'autofs':
     ensure => running,
@@ -49,8 +51,7 @@ class redelinux::domain::nfs
   }
 
   # Customizations
-  cfg_file { 'nfs-profile':
-    path    => '/etc/profile.d/nfs_path.sh',
-    mode    => '0655'
+  file_util::cfg { '/etc/profile.d/nfs_path.sh':
+    mode => '0655'
   }
 }

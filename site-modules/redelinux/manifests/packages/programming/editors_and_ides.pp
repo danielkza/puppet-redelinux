@@ -51,7 +51,8 @@ class redelinux::packages::programming::editors_and_ides
       'Debian' => $::lsbdistcodename ? {
         'wheezy' => 'precise',
         default  => 'trusty'
-      }
+      },
+      default  => fail("Unsupported OS $::operatingsystem")
     }
   }
 

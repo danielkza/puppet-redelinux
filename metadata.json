@@ -1,0 +1,13 @@
+{
+  "author": "Daniel Miranda <danielkza2@gmail.com>",
+  "dependencies": [],
+  "license": "GPLv2",
+  "name": "danielkza-redelinux_puppet",
+  "operatingsystem_support": [],
+  "project_page": "",
+  "requirements": [],
+  "source": "http://github.com/redelinux-ime-usp/puppet",
+  "summary": "Puppet modules for the undergraduate lab at IME-USP",
+  "tags": [],
+  "version": "0.1.0"
+}

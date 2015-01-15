@@ -23,12 +23,7 @@ class redelinux::packages::programming::languages
   # Erlang
   package { 'erlang': }
   # Java
-  if $redelinux::params::debian_pre_wheezy
-  {
-    package { 'openjdk-6-jdk': }
-  } else {
-    package { 'openjdk-7-jdk': }
-  }
+  package { 'openjdk-7-jdk': }
   package { 'ant': }
   package { 'maven2': }
   # Scala
@@ -58,16 +53,17 @@ class redelinux::packages::programming::languages
   apt::key {
     'puredata1':
       key        => '9F0FE587374BBE81',
-      key_server => 'keyserver.ubuntu.com'
+      key_server => 'keyserver.ubuntu.com';
+
     'puredata2':
-      key        => 'D63D3D09C39F5EEB'
+      key        => 'D63D3D09C39F5EEB',
       key_server => 'keyserver.ubuntu.com'
   }
 
   apt::source { 'puredata-extended':
     location => 'http://apt.puredata.info/releases',
     repos    => 'main',
-    release  => $::lsbdistcodename
+    release  => $::lsbdistcodename,
     require  => Apt::Key['puredata1', 'puredata2']
   }
 

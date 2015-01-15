@@ -5,7 +5,7 @@ class redelinux::packages::desktop::mozilla
   }
 
   if $::operatingsystem == 'Debian' {
-    if is_integer($::lsbmajdistrelease) && $::lsbmajdistrelease <= 7 { 
+    if is_integer($::lsbmajdistrelease) and $::lsbmajdistrelease <= 7 { 
       apt::source { 'mozilla':
         location          => 'http://mozilla.debian.net',
         repos             => 'iceweasel-release',

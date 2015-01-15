@@ -23,8 +23,8 @@ class redelinux::repos(
   if $purge {
     class { 'apt':
       purge_sources_list   => true,
-      purge_sources_list_d => true,
-      purge_preferences_d  => true,
+      purge_sources_list_d => false,
+      purge_preferences_d  => false,
     }
   } else {
     include apt
