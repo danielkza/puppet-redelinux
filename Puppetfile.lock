@@ -46,7 +46,7 @@ GIT
 GIT
   remote: git://github.com/danielkza/puppet-kerberos_site.git
   ref: master
-  sha: c87a7572c451cb3c688fc1c7f9ced770a980be8a
+  sha: f0c10d626f2cca916528513f37d58689024abdcc
   specs:
     danielkza-kerberos_site (0.1.0)
       puppetlabs-stdlib (>= 0)

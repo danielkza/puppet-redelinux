@@ -1,6 +1,7 @@
 class redelinux::servers::kerberos {
   File_util::Cfg {
-    source_prefix => 'kerberos' }
+    source_prefix => 'kerberos'
+  }
 
   package { ['krb5-admin-server', 'krb5-kdc']:
     ensure => installed

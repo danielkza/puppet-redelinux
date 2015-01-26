@@ -37,13 +37,13 @@ class redelinux::domain::nfs
       notify  => Service['autofs']
   }
   
-  include nsswitch
+  contain nsswitch
 
-  Class['Nsswitch'] {
+  Class['nsswitch'] {
     automount => ['files']
   }
     
-  Package['autofs'] -> Class['Nsswitch'] ~> Service['autofs']
+  Package['autofs'] -> Class['nsswitch'] ~> Service['autofs']
 
   service { 'autofs':
     ensure => running,

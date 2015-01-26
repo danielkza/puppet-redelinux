@@ -19,7 +19,7 @@ class redelinux::domain::ldap
       ensure  => present;
     '/etc/nslcd.conf':
       ensure  => present,
-      notify  => Service['nslcd']
+      notify  => Service['nslcd'],
       require => Package['libnss-ldapd'];
     '/etc/sysctl.d/90-max_keys.conf':
       ensure => present,
@@ -42,15 +42,15 @@ class redelinux::domain::ldap
   #   }
   # }
   
-  include nsswitch
+  contain nsswitch
 
-  Class['Nsswitch'] {
+  Class['nsswitch'] {
     passwd => ['compat', 'ldap'],
     group  => ['compat', 'ldap'],
     shadow => ['compat', 'ldap']
   }
   
-  Package['libnss-ldapd'] -> Class['Nsswitch'] ~> Service['nslcd']
+  Package['libnss-ldapd'] -> Class['nsswitch'] ~> Service['nslcd']
 
   service { 'nslcd':
     ensure => running,

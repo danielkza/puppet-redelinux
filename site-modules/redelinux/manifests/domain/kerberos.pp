@@ -1,10 +1,10 @@
-class redelinux::domain::kerberos::client
+class redelinux::domain::kerberos::client($extra_principals = [])
 {
   File_util::Cfg {
     source_prefix => 'kerberos'
   }
 
-  package { ['krb5-user', 'libpam-krb5']:
+  package { ['krb5-user', 'libpam-krb5', 'kstart']:
     ensure => installed
   }
 
@@ -20,5 +20,14 @@ class redelinux::domain::kerberos::client
       path       => '/root/.k5login',
       principals => $admin_princs
     }
+  }
+
+  $trusted_host_name = $trusted[certname]
+  $principals = ["host/$trusted_host_name"] + $extra_principals
+
+  redelinux::keytab { '/etc/krb5.keytab':
+    principals => $principals,
+    owner => 'root',
+    group => 'root'
   }
 }    
