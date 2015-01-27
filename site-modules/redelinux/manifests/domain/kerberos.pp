@@ -26,8 +26,9 @@ class redelinux::domain::kerberos::client($extra_principals = [])
   $principals = ["host/$trusted_host_name"] + $extra_principals
 
   redelinux::keytab { '/etc/krb5.keytab':
-    principals => $principals,
-    owner => 'root',
-    group => 'root'
+    principals        => $principals,
+    create_principals => false,
+    owner             => 'root',
+    group             => 'root'
   }
-}    
+}
