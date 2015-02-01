@@ -1,5 +1,6 @@
-class redelinux::domain::kerberos::client($extra_principals = [])
-{
+class redelinux::domain::kerberos(
+  $extra_principals = []
+) {
   File_util::Cfg {
     source_prefix => 'kerberos'
   }
@@ -23,12 +24,16 @@ class redelinux::domain::kerberos::client($extra_principals = [])
   }
 
   $trusted_host_name = $trusted[certname]
-  $principals = ["host/$trusted_host_name"] + $extra_principals
-
-  redelinux::keytab { '/etc/krb5.keytab':
-    principals        => $principals,
-    create_principals => false,
-    owner             => 'root',
-    group             => 'root'
-  }
+  if ! empty($trusted_host_name) {
+	  $principals = ["host/$trusted_host_name"] + $extra_principals
+	
+	  redelinux::keytab { '/etc/krb5.keytab':
+	    principals        => $principals,
+	    create_principals => false,
+	    owner             => 'root',
+	    group             => 'root'
+	  }
+	} else {
+	  warning("Trusted hostname not available, skipping keytab")
+	}
 }

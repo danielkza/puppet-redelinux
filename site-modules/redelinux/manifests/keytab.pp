@@ -2,8 +2,9 @@ define redelinux::keytab(
   $path = $title,
   $principals,
   $create_principals = true,
-  $owner = undef,
-  $group = undef
+  $owner = 'root',
+  $group = 'root',
+  $mode  = '0600'
 ) {
   if validate_array($principals) {
     each($principals) |$princ| {
@@ -24,11 +25,11 @@ define redelinux::keytab(
   }
 
   file { "redelinux_keytab_$title":
-    ensure => file,
-    path   => $path,
-    owner  => $owner,
-    group  => $group,
-    mode   => '0600',
+    ensure  => file,
+    path    => $path,
+    owner   => $owner,
+    group   => $group,
+    mode    => $mode,
     content => krb5_generate_keytab($principals)
   }
 }
