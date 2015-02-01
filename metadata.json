@@ -3,8 +3,13 @@
   "dependencies": [],
   "license": "GPLv2",
   "name": "danielkza-redelinux_puppet",
-  "operatingsystem_support": [],
-  "project_page": "",
+  "operatingsystem_support": [{
+  	"operatingsystem": "Debian"
+  }, {
+  	"operatingsystem": "Ubuntu",
+  	"operatingsystemrelease": ["14.04"]
+  }],
+  "project_page": "http://github.com/redelinux-ime-usp/puppet",
   "requirements": [],
   "source": "http://github.com/redelinux-ime-usp/puppet",
   "summary": "Puppet modules for the undergraduate lab at IME-USP",
