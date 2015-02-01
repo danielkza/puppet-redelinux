@@ -1,4 +1,4 @@
-class redelinux::domain::ntp::client
+class redelinux::domain::ntp
 {
   package { 'ntp':
     ensure => installed
