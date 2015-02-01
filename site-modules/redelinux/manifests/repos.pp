@@ -4,14 +4,14 @@ class redelinux::repos(
 ) {
   class { 'apt':
     apt_update_frequency => 'daily',
-    fancy_progress       => true,
+    fancy_progress       => true
   }
 
   if $purge {
-    Class['Apt'] {
+    Class['apt'] {
       purge_sources_list   => true,
       purge_sources_list_d => false,
-      purge_preferences_d  => false,
+      purge_preferences_d  => false
     }
   }
   
@@ -19,14 +19,14 @@ class redelinux::repos(
 
   case $::operatingsystem {
     Debian: { 
-      class { redelinux::repos::debian:
+      class { 'redelinux::repos::debian':
         use_backports => $use_backports
       }
 
       contain redelinux::repos::debian
     }
     Ubuntu: {
-      class { redelinux::repos::ubuntu:
+      class { 'redelinux::repos::ubuntu':
         use_backports => $use_backports
       }
 
@@ -45,15 +45,15 @@ class redelinux::repos(
     key_server => 'subkeys.pgp.net',
   }
 
+  apt_key { 'puppetlabs':
+    source => 'https://apt.puppetlabs.com/keyring.gpg',
+  }
+  
   apt::source { 'puppetlabs':
     location => 'http://apt.puppetlabs.com',
     release  => $::lsbdistcodename,
     repos    => 'main',
     require  => Apt_key['puppetlabs'],
-  }
-
-  apt_key { 'puppetlabs':
-    source => 'https://apt.puppetlabs.com/keyring.gpg',
   }
 
   apt::pin { 'redelinux':
